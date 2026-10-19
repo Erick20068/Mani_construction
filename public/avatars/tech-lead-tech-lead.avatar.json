@@ -1,0 +1,480 @@
+{
+  "schema": "bible-strong/avatar-definition",
+  "schemaVersion": 1,
+  "name": "Tech Lead",
+  "body": {
+    "primary": {
+      "type": "cone",
+      "width": 250,
+      "height": 265,
+      "depth": 225,
+      "roundness": 0,
+      "morphRoundness": 0,
+      "tipRoundness": 0.55,
+      "baseRoundness": 0.45
+    },
+    "nodes": []
+  },
+  "colors": {
+    "body": "#1e40af",
+    "eyes": "#fbbf24"
+  },
+  "expressions": {
+    "neutral": {
+      "head": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "eyes": {
+        "left": {
+          "width": 20,
+          "height": 50,
+          "x": 0,
+          "y": -7,
+          "angle": 0
+        },
+        "right": {
+          "width": 20,
+          "height": 50,
+          "x": 0,
+          "y": -7,
+          "angle": 0
+        },
+        "spacing": 35
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "none",
+        "body": "none"
+      }
+    },
+    "attentive": {
+      "head": {
+        "x": 1.4,
+        "y": 6.2,
+        "z": 10.6
+      },
+      "eyes": {
+        "left": {
+          "width": 23.8,
+          "height": 58.1,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "right": {
+          "width": 23.8,
+          "height": 58.1,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "spacing": 56.8
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "none",
+        "body": "none"
+      }
+    },
+    "thinking": {
+      "head": {
+        "x": -4.2,
+        "y": 14.4,
+        "z": 11.2
+      },
+      "eyes": {
+        "left": {
+          "width": 22.1,
+          "height": 39.6,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "right": {
+          "width": 22.1,
+          "height": 39.6,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "spacing": 50.9
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "microSaccades",
+        "body": "slowDrift"
+      }
+    },
+    "focused": {
+      "head": {
+        "x": -6.1,
+        "y": -11,
+        "z": -14
+      },
+      "eyes": {
+        "left": {
+          "width": 23,
+          "height": 58.7,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "right": {
+          "width": 23,
+          "height": 58.7,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "spacing": 56.2
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "none",
+        "body": "none"
+      }
+    },
+    "skeptical": {
+      "head": {
+        "x": 3.5,
+        "y": -7.1,
+        "z": 9.8
+      },
+      "eyes": {
+        "left": {
+          "width": 24.3,
+          "height": 59.3,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "right": {
+          "width": 48.9,
+          "height": 13.4,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "spacing": 62.2
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "none",
+        "body": "none"
+      }
+    },
+    "concerned": {
+      "head": {
+        "x": -12.3,
+        "y": -17.6,
+        "z": 5.9
+      },
+      "eyes": {
+        "left": {
+          "width": 20.6,
+          "height": 47.8,
+          "x": 0,
+          "y": 0,
+          "angle": 23.5
+        },
+        "right": {
+          "width": 20.6,
+          "height": 47.8,
+          "x": 0,
+          "y": 0,
+          "angle": -24
+        },
+        "spacing": 54.9
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "shake",
+        "body": "slowDrift"
+      }
+    },
+    "curious": {
+      "head": {
+        "x": -12.3,
+        "y": -17.6,
+        "z": 5.9
+      },
+      "eyes": {
+        "left": {
+          "width": 20.6,
+          "height": 47.8,
+          "x": 0,
+          "y": 0,
+          "angle": 23.5
+        },
+        "right": {
+          "width": 20.6,
+          "height": 47.8,
+          "x": 0,
+          "y": 0,
+          "angle": -24
+        },
+        "spacing": 54.9
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "none",
+        "body": "none"
+      }
+    },
+    "happy": {
+      "head": {
+        "x": -2.1,
+        "y": -15.9,
+        "z": -14.5
+      },
+      "eyes": {
+        "left": {
+          "width": 34.2,
+          "height": 85.3,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "right": {
+          "width": 34.2,
+          "height": 83.2,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "spacing": 59.4
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "none",
+        "body": "none"
+      }
+    }
+  },
+  "expressionOrder": [
+    "neutral",
+    "attentive",
+    "thinking",
+    "focused",
+    "skeptical",
+    "concerned",
+    "curious",
+    "happy"
+  ],
+  "animations": {
+    "leading": {
+      "playbackMode": "loop",
+      "steps": [
+        {
+          "expression": "attentive",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        },
+        {
+          "expression": "thinking",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        },
+        {
+          "expression": "focused",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        },
+        {
+          "expression": "happy",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        }
+      ],
+      "blink": {
+        "enabled": true,
+        "initialDelayMs": 2000,
+        "minIntervalMs": 3000,
+        "maxIntervalMs": 6000,
+        "durationMs": 250
+      },
+      "metadata": {
+        "label": "leading",
+        "description": "Animación leading para neutral, attentive, thinking, focused, skeptical, concerned, curious, happy",
+        "group": "Agent Behavior"
+      }
+    },
+    "reviewing": {
+      "playbackMode": "loop",
+      "steps": [
+        {
+          "expression": "skeptical",
+          "holdMs": 2500,
+          "transitionMs": 500,
+          "transition": "smooth"
+        },
+        {
+          "expression": "attentive",
+          "holdMs": 2500,
+          "transitionMs": 500,
+          "transition": "smooth"
+        },
+        {
+          "expression": "focused",
+          "holdMs": 2500,
+          "transitionMs": 500,
+          "transition": "smooth"
+        },
+        {
+          "expression": "thinking",
+          "holdMs": 2500,
+          "transitionMs": 500,
+          "transition": "smooth"
+        }
+      ],
+      "blink": {
+        "enabled": true,
+        "initialDelayMs": 2000,
+        "minIntervalMs": 3000,
+        "maxIntervalMs": 6000,
+        "durationMs": 250
+      },
+      "metadata": {
+        "label": "reviewing",
+        "description": "Animación reviewing para neutral, attentive, thinking, focused, skeptical, concerned, curious, happy",
+        "group": "Agent Behavior"
+      }
+    },
+    "mentoring": {
+      "playbackMode": "loop",
+      "steps": [
+        {
+          "expression": "happy",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        },
+        {
+          "expression": "attentive",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        },
+        {
+          "expression": "curious",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        },
+        {
+          "expression": "focused",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        }
+      ],
+      "blink": {
+        "enabled": true,
+        "initialDelayMs": 2000,
+        "minIntervalMs": 3000,
+        "maxIntervalMs": 6000,
+        "durationMs": 250
+      },
+      "metadata": {
+        "label": "mentoring",
+        "description": "Animación mentoring para neutral, attentive, thinking, focused, skeptical, concerned, curious, happy",
+        "group": "Agent Behavior"
+      }
+    },
+    "architecting": {
+      "playbackMode": "loop",
+      "steps": [
+        {
+          "expression": "thinking",
+          "holdMs": 3500,
+          "transitionMs": 700,
+          "transition": "smooth"
+        },
+        {
+          "expression": "focused",
+          "holdMs": 3500,
+          "transitionMs": 700,
+          "transition": "smooth"
+        },
+        {
+          "expression": "skeptical",
+          "holdMs": 3500,
+          "transitionMs": 700,
+          "transition": "smooth"
+        },
+        {
+          "expression": "curious",
+          "holdMs": 3500,
+          "transitionMs": 700,
+          "transition": "smooth"
+        }
+      ],
+      "blink": {
+        "enabled": true,
+        "initialDelayMs": 2000,
+        "minIntervalMs": 3000,
+        "maxIntervalMs": 6000,
+        "durationMs": 250
+      },
+      "metadata": {
+        "label": "architecting",
+        "description": "Animación architecting para neutral, attentive, thinking, focused, skeptical, concerned, curious, happy",
+        "group": "Agent Behavior"
+      }
+    },
+    "idle": {
+      "playbackMode": "loop",
+      "steps": [
+        {
+          "expression": "neutral",
+          "holdMs": 4000,
+          "transitionMs": 800,
+          "transition": "smooth"
+        },
+        {
+          "expression": "attentive",
+          "holdMs": 4000,
+          "transitionMs": 800,
+          "transition": "smooth"
+        },
+        {
+          "expression": "thinking",
+          "holdMs": 4000,
+          "transitionMs": 800,
+          "transition": "smooth"
+        },
+        {
+          "expression": "happy",
+          "holdMs": 4000,
+          "transitionMs": 800,
+          "transition": "smooth"
+        }
+      ],
+      "blink": {
+        "enabled": true,
+        "initialDelayMs": 2000,
+        "minIntervalMs": 3000,
+        "maxIntervalMs": 6000,
+        "durationMs": 250
+      },
+      "metadata": {
+        "label": "idle",
+        "description": "Animación idle para neutral, attentive, thinking, focused, skeptical, concerned, curious, happy",
+        "group": "Agent Behavior"
+      }
+    }
+  },
+  "animationOrder": [
+    "leading",
+    "reviewing",
+    "mentoring",
+    "architecting",
+    "idle"
+  ]
+}

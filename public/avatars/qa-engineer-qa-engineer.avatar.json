@@ -1,0 +1,399 @@
+{
+  "schema": "bible-strong/avatar-definition",
+  "schemaVersion": 1,
+  "name": "QA Engineer",
+  "body": {
+    "primary": {
+      "type": "mickey",
+      "width": 220,
+      "height": 210,
+      "depth": 145,
+      "roundness": 1
+    },
+    "nodes": []
+  },
+  "colors": {
+    "body": "#059669",
+    "eyes": "#ecfdf5"
+  },
+  "expressions": {
+    "neutral": {
+      "head": {
+        "x": 0,
+        "y": 0,
+        "z": 0
+      },
+      "eyes": {
+        "left": {
+          "width": 20,
+          "height": 50,
+          "x": 0,
+          "y": -7,
+          "angle": 0
+        },
+        "right": {
+          "width": 20,
+          "height": 50,
+          "x": 0,
+          "y": -7,
+          "angle": 0
+        },
+        "spacing": 35
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "none",
+        "body": "none"
+      }
+    },
+    "skeptical": {
+      "head": {
+        "x": 3.5,
+        "y": -7.1,
+        "z": 9.8
+      },
+      "eyes": {
+        "left": {
+          "width": 24.3,
+          "height": 59.3,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "right": {
+          "width": 48.9,
+          "height": 13.4,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "spacing": 62.2
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "none",
+        "body": "none"
+      }
+    },
+    "attentive": {
+      "head": {
+        "x": 1.4,
+        "y": 6.2,
+        "z": 10.6
+      },
+      "eyes": {
+        "left": {
+          "width": 23.8,
+          "height": 58.1,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "right": {
+          "width": 23.8,
+          "height": 58.1,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "spacing": 56.8
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "none",
+        "body": "none"
+      }
+    },
+    "concerned": {
+      "head": {
+        "x": -12.3,
+        "y": -17.6,
+        "z": 5.9
+      },
+      "eyes": {
+        "left": {
+          "width": 20.6,
+          "height": 47.8,
+          "x": 0,
+          "y": 0,
+          "angle": 23.5
+        },
+        "right": {
+          "width": 20.6,
+          "height": 47.8,
+          "x": 0,
+          "y": 0,
+          "angle": -24
+        },
+        "spacing": 54.9
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "shake",
+        "body": "slowDrift"
+      }
+    },
+    "focused": {
+      "head": {
+        "x": -6.1,
+        "y": -11,
+        "z": -14
+      },
+      "eyes": {
+        "left": {
+          "width": 23,
+          "height": 58.7,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "right": {
+          "width": 23,
+          "height": 58.7,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "spacing": 56.2
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "none",
+        "body": "none"
+      }
+    },
+    "surprised": {
+      "head": {
+        "x": 2.9,
+        "y": -16.1,
+        "z": -20.9
+      },
+      "eyes": {
+        "left": {
+          "width": 51.7,
+          "height": 51.7,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "right": {
+          "width": 51.7,
+          "height": 51.7,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "spacing": 70.9
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "shake",
+        "body": "shake"
+      }
+    },
+    "thinking": {
+      "head": {
+        "x": -4.2,
+        "y": 14.4,
+        "z": 11.2
+      },
+      "eyes": {
+        "left": {
+          "width": 22.1,
+          "height": 39.6,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "right": {
+          "width": 22.1,
+          "height": 39.6,
+          "x": 0,
+          "y": 0,
+          "angle": 0
+        },
+        "spacing": 50.9
+      },
+      "perspective": 1,
+      "motion": {
+        "eyes": "microSaccades",
+        "body": "slowDrift"
+      }
+    }
+  },
+  "expressionOrder": [
+    "neutral",
+    "skeptical",
+    "attentive",
+    "concerned",
+    "focused",
+    "surprised",
+    "thinking"
+  ],
+  "animations": {
+    "testing": {
+      "playbackMode": "loop",
+      "steps": [
+        {
+          "expression": "skeptical",
+          "holdMs": 2500,
+          "transitionMs": 500,
+          "transition": "smooth"
+        },
+        {
+          "expression": "attentive",
+          "holdMs": 2500,
+          "transitionMs": 500,
+          "transition": "smooth"
+        },
+        {
+          "expression": "focused",
+          "holdMs": 2500,
+          "transitionMs": 500,
+          "transition": "smooth"
+        },
+        {
+          "expression": "concerned",
+          "holdMs": 2500,
+          "transitionMs": 500,
+          "transition": "smooth"
+        }
+      ],
+      "blink": {
+        "enabled": true,
+        "initialDelayMs": 2000,
+        "minIntervalMs": 3000,
+        "maxIntervalMs": 6000,
+        "durationMs": 250
+      },
+      "metadata": {
+        "label": "testing",
+        "description": "Animación testing para neutral, skeptical, attentive, concerned, focused, surprised, thinking",
+        "group": "Agent Behavior"
+      }
+    },
+    "hunting": {
+      "playbackMode": "loop",
+      "steps": [
+        {
+          "expression": "surprised",
+          "holdMs": 2000,
+          "transitionMs": 400,
+          "transition": "snappy"
+        },
+        {
+          "expression": "concerned",
+          "holdMs": 2000,
+          "transitionMs": 400,
+          "transition": "snappy"
+        },
+        {
+          "expression": "focused",
+          "holdMs": 2000,
+          "transitionMs": 400,
+          "transition": "snappy"
+        },
+        {
+          "expression": "thinking",
+          "holdMs": 2000,
+          "transitionMs": 400,
+          "transition": "snappy"
+        }
+      ],
+      "blink": {
+        "enabled": true,
+        "initialDelayMs": 2000,
+        "minIntervalMs": 3000,
+        "maxIntervalMs": 6000,
+        "durationMs": 250
+      },
+      "metadata": {
+        "label": "hunting",
+        "description": "Animación hunting para neutral, skeptical, attentive, concerned, focused, surprised, thinking",
+        "group": "Agent Behavior"
+      }
+    },
+    "verifying": {
+      "playbackMode": "loop",
+      "steps": [
+        {
+          "expression": "attentive",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        },
+        {
+          "expression": "focused",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        },
+        {
+          "expression": "skeptical",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        },
+        {
+          "expression": "neutral",
+          "holdMs": 3000,
+          "transitionMs": 600,
+          "transition": "smooth"
+        }
+      ],
+      "blink": {
+        "enabled": true,
+        "initialDelayMs": 2000,
+        "minIntervalMs": 3000,
+        "maxIntervalMs": 6000,
+        "durationMs": 250
+      },
+      "metadata": {
+        "label": "verifying",
+        "description": "Animación verifying para neutral, skeptical, attentive, concerned, focused, surprised, thinking",
+        "group": "Agent Behavior"
+      }
+    },
+    "idle": {
+      "playbackMode": "loop",
+      "steps": [
+        {
+          "expression": "neutral",
+          "holdMs": 4000,
+          "transitionMs": 800,
+          "transition": "smooth"
+        },
+        {
+          "expression": "attentive",
+          "holdMs": 4000,
+          "transitionMs": 800,
+          "transition": "smooth"
+        },
+        {
+          "expression": "skeptical",
+          "holdMs": 4000,
+          "transitionMs": 800,
+          "transition": "smooth"
+        }
+      ],
+      "blink": {
+        "enabled": true,
+        "initialDelayMs": 2000,
+        "minIntervalMs": 3000,
+        "maxIntervalMs": 6000,
+        "durationMs": 250
+      },
+      "metadata": {
+        "label": "idle",
+        "description": "Animación idle para neutral, skeptical, attentive, concerned, focused, surprised, thinking",
+        "group": "Agent Behavior"
+      }
+    }
+  },
+  "animationOrder": [
+    "testing",
+    "hunting",
+    "verifying",
+    "idle"
+  ]
+}
