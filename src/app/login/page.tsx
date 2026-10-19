@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -16,12 +16,30 @@ import {
   Hammer, 
   Box, 
   Sparkles,
+  Shield,
+  Truck,
   Loader2
 } from "lucide-react"
 import { toast } from "sonner"
 import { createClient } from "@/lib/supabase"
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <LoginForm />
+    </Suspense>
+  )
+}
+
+function PageLoader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <Loader2 className="h-8 w-8 text-primary animate-spin" />
+    </div>
+  )
+}
+
+function LoginForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get("redirect") || "/client"

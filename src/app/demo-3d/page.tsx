@@ -113,7 +113,7 @@ export default function Demo3DPage() {
 
       <div className="container mx-auto px-6 py-8">
         {/* Tabs */}
-        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)} className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-8">
             <TabsTrigger value="player">
               <Eye className="h-4 w-4 mr-2" />

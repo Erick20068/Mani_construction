@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
-import type { AgentType, AGENT_AVATARS, AGENT_STATUS_ANIMATIONS } from "@/types"
+import type { AgentType } from "@/types"
+import { AGENT_AVATARS, AGENT_STATUS_ANIMATIONS } from "@/types"
 
 // Avatar definition structure from Bible Strong Avatar Lab
 interface AvatarDefinition {
@@ -36,7 +37,7 @@ interface AvatarDefinition {
   animationOrder: string[]
 }
 
-interface AgentAvatarProps {
+export interface AgentAvatarProps {
   agentType: AgentType
   status?: keyof typeof AGENT_STATUS_ANIMATIONS
   size?: number
@@ -58,17 +59,19 @@ export function AgentAvatar({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [avatarDef, setAvatarDef] = useState<AvatarDefinition | null>(null)
   const [currentAnimation, setCurrentAnimation] = useState<string>("idle")
-  const [frame, setFrame] = useState(0)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number | undefined>(undefined)
   const avatarData = AGENT_AVATARS[agentType]
 
   // Load avatar definition
   useEffect(() => {
+    let cancelled = false
+
     async function loadAvatar() {
       try {
         const response = await fetch(`/avatars/${avatarData.file}`)
         if (response.ok) {
           const def = await response.json()
+          if (cancelled) return
           setAvatarDef(def)
           setCurrentAnimation(status)
         }
@@ -76,18 +79,21 @@ export function AgentAvatar({
         console.warn(`Failed to load avatar for ${agentType}:`, error)
       }
     }
+
     loadAvatar()
-  }, [agentType])
+    return () => {
+      cancelled = true
+    }
+  }, [agentType, avatarData.file, status])
 
   // Update animation when status changes
   useEffect(() => {
     if (avatarDef && avatarDef.animations[status]) {
       setCurrentAnimation(status)
-      setFrame(0)
     }
   }, [status, avatarDef])
 
-  // Animation loop
+  // Animation loop:，表情 + parpadeo
   useEffect(() => {
     if (!avatarDef || !canvasRef.current) return
 
@@ -98,40 +104,81 @@ export function AgentAvatar({
     canvas.width = size
     canvas.height = size
 
-    const animation = avatarDef.animations[currentAnimation]
+    // Referencia local para mantener el narrowing de tipos dentro del closure
+    const def = avatarDef
+
+    const animation =
+      def.animations[currentAnimation] ||
+      def.animations[def.animationOrder?.[0]] ||
+      def.animations.idle
+
     if (!animation) return
 
-    let currentFrame = 0
-    const steps = animation.steps
+    const steps: any[] = animation.steps || []
+    if (steps.length === 0) return
+
+    const blink = animation.blink || {}
+    const blinkEnabled = blink.enabled !== false
+
     let stepIndex = 0
-    let stepProgress = 0
     let holdTime = 0
+    let stepProgress = 0
+
+    // Estado del parpadeo
+    let nextBlinkAt = blinkEnabled ? (blink.initialDelayMs ?? 2000) / 1000 : Infinity
+    let blinkStartedAt = -1
+    let blinkDuration = (blink.durationMs ?? 250) / 1000
+
+    const now = () => performance.now() / 1000
 
     function animate() {
       if (!ctx) return
-      
+
       ctx.clearRect(0, 0, size, size)
-      
-      // Render current expression
+
       const currentStep = steps[stepIndex]
-      const expression = avatarDef.expressions[currentStep.expression]
-      
-      if (expression) {
-        renderAvatar(ctx, avatarDef, expression, size)
+      const nextStep = steps[(stepIndex + 1) % steps.length]
+      const currentExpr = def.expressions[currentStep.expression] || def.expressions.neutral
+      const nextExpr = def.expressions[nextStep.expression] || currentExpr
+
+      // Factor de parpadeo (0 = cerrado, 1 = abierto)
+      let blinkScale = 1
+      const t = now()
+      if (blinkEnabled) {
+        if (blinkStartedAt >= 0) {
+          const elapsed = t - blinkStartedAt
+          blinkScale = Math.max(0, 1 - elapsed / blinkDuration)
+          if (elapsed >= blinkDuration) {
+            blinkStartedAt = -1
+            blinkScale = 1
+            const min = (blink.minIntervalMs ?? 3000) / 1000
+            const max = (blink.maxIntervalMs ?? 6000) / 1000
+            nextBlinkAt = t + min + Math.random() * (max - min)
+          }
+        } else if (t >= nextBlinkAt) {
+          blinkStartedAt = t
+          blinkScale = 0.05
+        }
       }
 
-      // Animation logic
-      holdTime++
-      const holdFrames = (currentStep.holdMs / 1000) * 60 // Convert ms to frames at 60fps
-      const transitionFrames = (currentStep.transitionMs / 1000) * 60
+      // Interpolar entre la expresión actual y la siguiente durante la transición
+      const expression =
+        stepProgress > 0
+          ? lerpExpression(currentExpr, nextExpr, stepProgress)
+          : currentExpr
 
-      if (holdTime < holdFrames) {
-        // Holding
-      } else if (holdTime < holdFrames + transitionFrames) {
-        // Transitioning
-        stepProgress = (holdTime - holdFrames) / transitionFrames
+      renderAvatar(ctx, def, expression, size, blinkScale)
+
+      // Lógica de pasos
+      holdTime += 1 / 60
+      const holdSeconds = (currentStep.holdMs ?? 3000) / 1000
+      const transitionSeconds = (currentStep.transitionMs ?? 600) / 1000
+
+      if (holdTime < holdSeconds) {
+        stepProgress = 0
+      } else if (holdTime < holdSeconds + transitionSeconds) {
+        stepProgress = (holdTime - holdSeconds) / transitionSeconds
       } else {
-        // Next step
         stepIndex = (stepIndex + 1) % steps.length
         holdTime = 0
         stepProgress = 0
@@ -148,114 +195,59 @@ export function AgentAvatar({
     }
   }, [avatarDef, currentAnimation, size, status])
 
-  // Simple SVG-based avatar rendering (fallback when canvas is complex)
-  const renderSimpleAvatar = () => {
-    if (!avatarDef) return null
-
-    const primaryColor = avatarDef.colors.body
-    const eyeColor = avatarDef.colors.eyes
-    const surfaceType = avatarDef.body.primary.type
-
-    const surfaceShapes: Record<string, string> = {
-      sphere: "circle",
-      cube: "square",
-      capsule: "rounded-rect",
-      cylinder: "cylinder",
-      cone: "triangle",
-      diamond: "diamond",
-      mickey: "mickey",
-    }
-
-    return (
-      <div className={cn("relative inline-flex flex-col items-center", className)}>
-        <div
-          className={cn("relative", onClick && "cursor-pointer")}
-          onClick={onClick}
-          style={{ width: size, height: size }}
-        >
-          <AgentAvatarCanvas
-            avatarDef={avatarDef}
-            currentAnimation={currentAnimation}
-            frame={frame}
-            size={size}
-            ref={canvasRef}
-          />
-        </div>
-        {showName && (
-          <span className="mt-2 text-xs font-medium text-center text-foreground">
-            {avatarData.name}
-          </span>
-        )}
-        {showTitle && (
-          <span className="text-[10px] text-center text-muted-foreground">
-            {avatarData.title}
-          </span>
-        )}
-        <AgentStatusIndicator status={status} />
+  return (
+    <div className={cn("relative inline-flex flex-col items-center", className)}>
+      <div
+        className={cn("relative", onClick && "cursor-pointer")}
+        onClick={onClick}
+        style={{ width: size, height: size }}
+      >
+        <canvas ref={canvasRef} width={size} height={size} className="block" />
       </div>
-    )
-  }
-
-  return renderSimpleAvatar()
+      {showName && (
+        <span className="mt-2 text-xs font-medium text-center text-foreground">
+          {avatarData.name}
+        </span>
+      )}
+      {showTitle && (
+        <span className="text-[10px] text-center text-muted-foreground">
+          {avatarData.title}
+        </span>
+      )}
+      <AgentStatusIndicator status={status} />
+    </div>
+  )
 }
 
-// Canvas-based avatar renderer
-function AgentAvatarCanvas({
-  avatarDef,
-  currentAnimation,
-  frame,
-  size,
-  ref,
-}: {
-  avatarDef: AvatarDefinition
-  currentAnimation: string
-  frame: number
-  size: number
-  ref: React.RefObject<HTMLCanvasElement>
-}) {
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-  const effectiveRef = ref || canvasRef
+/**
+ * Dibuja el avatar en el canvas usando la definición y la expresión dada.
+ */
+function renderAvatar(
+  ctx: CanvasRenderingContext2D,
+  avatarDef: AvatarDefinition,
+  expression: any,
+  size: number,
+  blinkScale = 1
+) {
+  const centerX = size / 2
+  const centerY = size / 2
+  const radius = Math.min(size, size) * 0.4
 
-  useEffect(() => {
-    const canvas = effectiveRef.current
-    if (!canvas) return
+  ctx.save()
+  ctx.translate(centerX, centerY)
 
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
+  // Desplazamiento de la cabeza según la expresión
+  const head = expression?.head || { x: 0, y: 0, z: 0 }
+  const scale = radius / 120
+  ctx.translate((head.x || 0) * scale, (head.y || 0) * scale)
 
-    canvas.width = size
-    canvas.height = size
+  // Cuerpo
+  drawBody(ctx, avatarDef.body.primary.type, radius, avatarDef.colors.body, avatarDef.body.primary)
 
-    function drawAvatar() {
-      if (!ctx) return
-      
-      ctx.clearRect(0, 0, size, size)
-      
-      const centerX = size / 2
-      const centerY = size / 2
-      const radius = Math.min(size, size) * 0.4
+  // Ojos
+  drawEyes(ctx, radius, avatarDef.colors.eyes, expression, blinkScale)
 
-      // Draw body based on surface type
-      const surfaceType = avatarDef.body.primary.type
-      const bodyColor = avatarDef.colors.body
-      const eyeColor = avatarDef.colors.eyes
-
-      ctx.save()
-      ctx.translate(centerX, centerY)
-
-      // Body
-      drawBody(ctx, surfaceType, radius, bodyColor, avatarDef.body.primary)
-
-      // Eyes
-      drawEyes(ctx, radius, eyeColor, avatarDef.expressions.neutral)
-
-      ctx.restore()
-    }
-
-    drawAvatar()
-  }, [avatarDef, currentAnimation, frame, size])
-
-  return <canvas ref={effectiveRef} className="block" />
+  ctx.restore()
 }
 
 function drawBody(
@@ -276,14 +268,15 @@ function drawBody(
       ctx.fill()
       ctx.stroke()
       break
-    case "cube":
+    case "cube": {
       const half = radius * 0.8
       ctx.beginPath()
       ctx.roundRect(-half, -half, half * 2, half * 2, radius * 0.1)
       ctx.fill()
       ctx.stroke()
       break
-    case "capsule":
+    }
+    case "capsule": {
       const capRadius = radius * 0.6
       const capHeight = radius * 1.2
       ctx.beginPath()
@@ -296,6 +289,7 @@ function drawBody(
       ctx.fill()
       ctx.stroke()
       break
+    }
     case "cylinder":
       ctx.beginPath()
       ctx.ellipse(0, -radius * 0.8, radius * 0.7, radius * 0.15, 0, 0, Math.PI * 2)
@@ -330,12 +324,12 @@ function drawBody(
       ctx.stroke()
       break
     case "mickey":
-      // Head
+      // Cabeza
       ctx.beginPath()
       ctx.arc(0, -radius * 0.3, radius * 0.7, 0, Math.PI * 2)
       ctx.fill()
       ctx.stroke()
-      // Ears
+      // Orejas
       ctx.beginPath()
       ctx.arc(-radius * 0.85, -radius * 0.9, radius * 0.4, 0, Math.PI * 2)
       ctx.fill()
@@ -355,27 +349,68 @@ function drawEyes(
   ctx: CanvasRenderingContext2D,
   radius: number,
   eyeColor: string,
-  expression: any
+  expression: any,
+  blinkScale = 1
 ) {
   const eyeData = expression?.eyes
   if (!eyeData) return
 
-  const spacing = (eyeData.spacing || 35) * (radius / 120)
-  const eyeWidth = (eyeData.left?.width || 20) * (radius / 120)
-  const eyeHeight = (eyeData.left?.height || 50) * (radius / 120)
-  const eyeY = (eyeData.left?.y || -7) * (radius / 120)
+  const scale = radius / 120
+  const spacing = (eyeData.spacing ?? 35) * scale
 
   ctx.fillStyle = eyeColor
 
-  // Left eye
-  ctx.beginPath()
-  ctx.ellipse(-spacing / 2, eyeY, eyeWidth / 2, eyeHeight / 2, 0, 0, Math.PI * 2)
-  ctx.fill()
+  const drawEye = (eye: any, offsetX: number) => {
+    if (!eye) return
+    const width = (eye.width ?? 20) * scale
+    const height = Math.max(0.6, (eye.height ?? 50) * scale * blinkScale)
+    const x = offsetX + (eye.x ?? 0) * scale
+    const y = (eye.y ?? -7) * scale
+    const angle = ((eye.angle ?? 0) * Math.PI) / 180
 
-  // Right eye
-  ctx.beginPath()
-  ctx.ellipse(spacing / 2, eyeY, eyeWidth / 2, eyeHeight / 2, 0, 0, Math.PI * 2)
-  ctx.fill()
+    ctx.beginPath()
+    ctx.ellipse(x, y, Math.max(0.5, width / 2), Math.max(0.5, height / 2), angle, 0, Math.PI * 2)
+    ctx.fill()
+  }
+
+  drawEye(eyeData.left, -spacing / 2)
+  drawEye(eyeData.right, spacing / 2)
+}
+
+/**
+ * Interpola dos expresiones (datos numéricos) para transiciones suaves.
+ */
+function lerpExpression(a: any, b: any, t: number): any {
+  if (!a) return b
+  if (!b) return a
+  if (t <= 0) return a
+  if (t >= 1) return b
+
+  const lerpNum = (x?: number, y?: number) =>
+    (x ?? 0) + ((y ?? 0) - (x ?? 0)) * t
+
+  const lerpEye = (eyeA: any, eyeB: any) => ({
+    width: lerpNum(eyeA?.width, eyeB?.width),
+    height: lerpNum(eyeA?.height, eyeB?.height),
+    x: lerpNum(eyeA?.x, eyeB?.x),
+    y: lerpNum(eyeA?.y, eyeB?.y),
+    angle: lerpNum(eyeA?.angle, eyeB?.angle),
+  })
+
+  return {
+    head: {
+      x: lerpNum(a.head?.x, b.head?.x),
+      y: lerpNum(a.head?.y, b.head?.y),
+      z: lerpNum(a.head?.z, b.head?.z),
+    },
+    eyes: {
+      left: lerpEye(a.eyes?.left, b.eyes?.left),
+      right: lerpEye(a.eyes?.right, b.eyes?.right),
+      spacing: lerpNum(a.eyes?.spacing, b.eyes?.spacing),
+    },
+    perspective: lerpNum(a.perspective, b.perspective),
+    motion: b.motion ?? a.motion,
+  }
 }
 
 function shadeColor(color: string, percent: number): string {
@@ -388,15 +423,15 @@ function shadeColor(color: string, percent: number): string {
 }
 
 function AgentStatusIndicator({ status }: { status: string }) {
-  const statusConfig: Record<string, { label: string; color: string; icon: string }> = {
-    idle: { label: "Disponible", color: "bg-green-500", icon: "●" },
-    working: { label: "Trabajando", color: "bg-blue-500 animate-pulse", icon: "⚡" },
-    thinking: { label: "Pensando", color: "bg-yellow-500", icon: "💭" },
-    reviewing: { label: "Revisando", color: "bg-purple-500", icon: "👁" },
-    debugging: { label: "Depurando", color: "bg-orange-500 animate-bounce", icon: "🐛" },
-    incident: { label: "Incidente", color: "bg-red-500 animate-pulse", icon: "🚨" },
-    presenting: { label: "Presentando", color: "bg-indigo-500", icon: "📊" },
-    learning: { label: "Aprendiendo", color: "bg-teal-500", icon: "📚" },
+  const statusConfig: Record<string, { label: string; color: string }> = {
+    idle: { label: "Disponible", color: "bg-green-500" },
+    working: { label: "Trabajando", color: "bg-blue-500 animate-pulse" },
+    thinking: { label: "Pensando", color: "bg-yellow-500" },
+    reviewing: { label: "Revisando", color: "bg-purple-500" },
+    debugging: { label: "Depurando", color: "bg-orange-500 animate-bounce" },
+    incident: { label: "Incidente", color: "bg-red-500 animate-pulse" },
+    presenting: { label: "Presentando", color: "bg-indigo-500" },
+    learning: { label: "Aprendiendo", color: "bg-teal-500" },
   }
 
   const config = statusConfig[status] || statusConfig.idle

@@ -60,8 +60,15 @@ interface CatalogoClientProps {
     sort: string
     page: number
   }
-  categories: { id: string; name: string; icon: React.ComponentType<{ className?: string }> }[]
+  categories: { id: string; name: string; icon: string }[]
   woodTypes: { id: string; name: string }[]
+}
+
+// Mapa de string -> componente de icono (solo se usa en el cliente)
+const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
+  box: Box,
+  tree: TreePine,
+  sparkles: Sparkles,
 }
 
 export function CatalogoClient({
@@ -173,21 +180,24 @@ export function CatalogoClient({
                     Categorías
                   </h3>
                   <nav className="space-y-1">
-                    {categories.map((cat) => (
-                      <Link
-                        key={cat.id}
-                        href={`/catalogo?category=${cat.id}&wood=${wood}&sort=${sort}`}
-                        className={cn(
-                          "flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors",
-                          category === cat.id 
-                            ? "bg-primary/10 text-primary font-medium" 
-                            : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
-                        )}
-                      >
-                        <cat.icon className="h-4 w-4" />
-                        {cat.name}
-                      </Link>
-                    ))}
+                    {categories.map((cat) => {
+                      const CatIcon = ICONS[cat.icon] || Box
+                      return (
+                        <Link
+                          key={cat.id}
+                          href={`/catalogo?category=${cat.id}&wood=${wood}&sort=${sort}`}
+                          className={cn(
+                            "flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors",
+                            category === cat.id 
+                              ? "bg-primary/10 text-primary font-medium" 
+                              : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
+                          )}
+                        >
+                          <CatIcon className="h-4 w-4" />
+                          {cat.name}
+                        </Link>
+                      )
+                    })}
                   </nav>
                 </div>
 
@@ -310,70 +320,69 @@ export function CatalogoClient({
                   {[1,2,3,4,5,6].map(i => <CatalogItemSkeleton key={i} />)}
                 </div>
               ) : filteredItems.length > 0 ? (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                  {filteredItems.map(item => (
-                    <CatalogItemCard 
-                      key={item.id} 
-                      item={item} 
-                      inCart={false}
-                      onAdd={() => {}}
-                    />
-                  ))}
-                </div>
-
                 <>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {filteredItems.map(item => (
+                      <CatalogItemCard 
+                        key={item.id} 
+                        item={item} 
+                        inCart={false}
+                        onAdd={() => {}}
+                      />
+                    ))}
+                  </div>
+
                   {totalPages > 1 && (
                     <div className="flex items-center justify-center gap-2 mt-8">
-                  <div className="flex items-center justify-center gap-2 mt-8">
-                    {page > 1 && (
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => { setPage(page - 1); handleFilterChange() }}
-                      >
-                        <ChevronLeft className="h-4 w-4 mr-1" />
-                        Anterior
-                      </Button>
-                    )}
-                    <div className="flex items-center gap-1">
-                      {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-                        let pageNum: number
-                        if (totalPages <= 5) {
-                          pageNum = i + 1
-                        } else if (page <= 3) {
-                          pageNum = i + 1
-                        } else if (page >= totalPages - 2) {
-                          pageNum = totalPages - 4 + i
-                        } else {
-                          pageNum = page - 2 + i
-                        }
-                        return (
-                          <Button
-                            key={pageNum}
-                            variant={page === pageNum ? "default" : "outline"}
-                            size="sm"
-                            className="h-9 w-9"
-                            onClick={() => { setPage(pageNum); handleFilterChange() }}
-                          >
-                            {pageNum}
-                          </Button>
-                        )
-                      })}
+                      {page > 1 && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => { setPage(page - 1); handleFilterChange() }}
+                        >
+                          <ChevronLeft className="h-4 w-4 mr-1" />
+                          Anterior
+                        </Button>
+                      )}
+                      <div className="flex items-center gap-1">
+                        {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                          let pageNum: number
+                          if (totalPages <= 5) {
+                            pageNum = i + 1
+                          } else if (page <= 3) {
+                            pageNum = i + 1
+                          } else if (page >= totalPages - 2) {
+                            pageNum = totalPages - 4 + i
+                          } else {
+                            pageNum = page - 2 + i
+                          }
+                          return (
+                            <Button
+                              key={pageNum}
+                              variant={page === pageNum ? "default" : "outline"}
+                              size="sm"
+                              className="h-9 w-9"
+                              onClick={() => { setPage(pageNum); handleFilterChange() }}
+                            >
+                              {pageNum}
+                            </Button>
+                          )
+                        })}
+                      </div>
+                      {page < totalPages && (
+                        <Button 
+                          variant="outline" 
+                          size="sm"
+                          onClick={() => { setPage(page + 1); handleFilterChange() }}
+                        >
+                          Siguiente
+                          <ChevronRight className="h-4 w-4 ml-1" />
+                        </Button>
+                      )}
                     </div>
-                    {page < totalPages && (
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        onClick={() => { setPage(page + 1); handleFilterChange() }}
-                      >
-                        Siguiente
-                        <ChevronRight className="h-4 w-4 ml-1" />
-                      </Button>
-                    )}
-                  </div>
-                )}
-              </>
-            ) : (
+                  )}
+                </>
+              ) : (
                 /* Empty State */
                 <div className="text-center py-16">
                   <Box className="h-16 w-16 mx-auto text-muted-foreground/50 mb-4" />
@@ -410,7 +419,7 @@ function CatalogItemCard({ item, inCart, onAdd }: { item: any; inCart: boolean; 
         />
         {images.length > 1 && (
           <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1">
-            {images.map((_, i) => (
+            {images.map((_image: string, i: number) => (
               <button
                 key={i}
                 onClick={(e) => { e.preventDefault(); setImageIndex(i) }}
@@ -477,5 +486,3 @@ function CatalogItemSkeleton() {
     </Card>
   )
 }
-
-import { Video, Truck } from "lucide-react"

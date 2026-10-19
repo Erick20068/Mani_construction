@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { Providers } from './providers'
-import { Toaster } from '@/components/ui/toaster'
+import { Toaster } from "sonner"
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })
 
@@ -50,6 +50,11 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
 }
+
+// La app depende de cookies (Supabase SSR), datos de Supabase y
+// useSearchParams() en cliente: no puede producir un shell estático.
+// Optamos la app completa fuera de la validación de shell estático.
+export const instant = false
 
 export default function RootLayout({
   children,

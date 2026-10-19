@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, Suspense } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -38,6 +38,8 @@ import {
   Heart,
   Share2,
   ExternalLink,
+  Video,
+  Truck,
   X
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -94,6 +96,22 @@ interface ProformaFormData {
 }
 
 export default function ProformasPage() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <ProformasBuilder />
+    </Suspense>
+  )
+}
+
+function PageLoader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <Loader2 className="h-8 w-8 text-primary animate-spin" />
+    </div>
+  )
+}
+
+function ProformasBuilder() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const productParam = searchParams.get("product")
@@ -411,7 +429,9 @@ export default function ProformasPage() {
                       <span className="text-primary">{formatCurrency(total)}</span>
                     </div>
                   </div>
-                </CardContent>
+                  </div>
+                )}
+              </CardContent>
                 <CardFooter className="pt-0">
                   <Button 
                     className="w-full gap-2" 
@@ -430,7 +450,7 @@ export default function ProformasPage() {
 
             {/* Main - Catalog & Builder */}
             <div className="lg:col-span-3">
-              <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+              <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)} className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
                   <TabsTrigger value="builder">
                     <Box className="h-4 w-4 mr-2" />
@@ -565,7 +585,7 @@ export default function ProformasPage() {
                 Configura materiales, dimensiones y acabados. El precio se actualiza en tiempo real.
               </DialogDescription>
             </DialogHeader>
-            <DialogContent className="max-h-[60vh] overflow-y-auto">
+            <div className="max-h-[60vh] overflow-y-auto">
               {showCustomizeDialog && (
                 <CustomizationForm 
                   item={showCustomizeDialog} 
@@ -573,7 +593,7 @@ export default function ProformasPage() {
                   onCancel={() => setShowCustomizeDialog(null)}
                 />
               )}
-            </DialogContent>
+            </div>
           </DialogContent>
         </Dialog>
 
@@ -587,7 +607,7 @@ export default function ProformasPage() {
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={submitProforma}>
-              <DialogContent className="max-h-[70vh] overflow-y-auto p-6">
+              <div className="max-h-[70vh] overflow-y-auto p-6">
                 <div className="space-y-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div className="space-y-1.5">
@@ -686,7 +706,7 @@ export default function ProformasPage() {
                     />
                   </div>
                 </div>
-              </DialogContent>
+              </div>
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={() => setShowClientForm(false)}>
                   Cancelar
@@ -700,7 +720,6 @@ export default function ProformasPage() {
           </DialogContent>
         </Dialog>
       </div>
-    </div>
   )
 }
 
@@ -1045,5 +1064,3 @@ function CustomizationForm({ item, onSave, onCancel }: { item: CartItem; onSave:
     </div>
   )
 }
-
-import { Video, Truck } from "lucide-react"

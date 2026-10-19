@@ -47,16 +47,10 @@ interface Video3D {
   }
 }
 
-const typeConfig = {
+const typeLabels = {
   showcase: { label: "Muebles Realizados", icon: CheckCircle, color: "bg-green-500" },
   possible: { label: "Lo que Podemos Hacer", icon: Sparkles, color: "bg-purple-500" },
   process: { label: "Proceso de Fabricación", icon: RotateCcw, color: "bg-blue-500" },
-}
-
-const typeIcons = {
-  showcase: CheckCircle,
-  possible: Sparkles,
-  process: RotateCcw,
 }
 
 export default function Galeria3DPage() {
@@ -338,6 +332,7 @@ export default function Galeria3DPage() {
 function Video3DCard({ video, onSelect }: { video: Video3D; onSelect: (v: Video3D) => void }) {
   const [isHovered, setIsHovered] = useState(false)
   const typeConfig = typeLabels[video.type]
+  const TypeIcon = typeConfig.icon
 
   return (
     <Card 
@@ -376,7 +371,7 @@ function Video3DCard({ video, onSelect }: { video: Video3D; onSelect: (v: Video3
         {/* Type Badge */}
         <div className="absolute top-3 left-3">
           <Badge variant="default" className={cn("gap-1", typeConfig.color)}>
-            <typeConfig.icon className="h-3 w-3" />
+            <TypeIcon className="h-3 w-3" />
             {typeConfig.label}
           </Badge>
         </div>
@@ -476,6 +471,7 @@ function Video3DCard({ video, onSelect }: { video: Video3D; onSelect: (v: Video3
 // Video List Item for List View
 function Video3DListItem({ video, onSelect }: { video: Video3D; onSelect: (v: Video3D) => void }) {
   const typeConfig = typeLabels[video.type]
+  const TypeIcon = typeConfig.icon
 
   return (
     <Card className="flex flex-row gap-4 hover:shadow-md transition-shadow">
@@ -493,7 +489,7 @@ function Video3DListItem({ video, onSelect }: { video: Video3D; onSelect: (v: Vi
           </button>
         </div>
         <Badge variant="default" className={cn("absolute top-2 left-2", typeConfig.color)}>
-          <typeConfig.icon className="h-3 w-3" />
+          <TypeIcon className="h-3 w-3" />
         </Badge>
       </div>
       <div className="flex-1 flex flex-col justify-between p-4">

@@ -199,6 +199,25 @@ ALTER TABLE videos_3d ENABLE ROW LEVEL SECURITY;
 ALTER TABLE agent_activities ENABLE ROW LEVEL SECURITY;
 
 -- Profiles policies
+--
+-- IMPORTANTE: las políticas de `profiles` NO pueden consultar `profiles`
+-- directamente (recursión infinita en RLS -> error 42P17).
+-- Se usa la función `public.is_admin()` (SECURITY DEFINER) que salta el RLS.
+CREATE OR REPLACE FUNCTION public.is_admin()
+RETURNS boolean
+LANGUAGE sql
+SECURITY DEFINER
+SET search_path = public
+STABLE
+AS $$
+  SELECT EXISTS (
+    SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'admin'
+  );
+$$;
+
+REVOKE ALL ON FUNCTION public.is_admin() FROM PUBLIC;
+GRANT EXECUTE ON FUNCTION public.is_admin() TO anon, authenticated, service_role;
+
 CREATE POLICY "Users can view own profile" ON profiles
   FOR SELECT USING (auth.uid() = id);
 
@@ -206,19 +225,15 @@ CREATE POLICY "Users can update own profile" ON profiles
   FOR UPDATE USING (auth.uid() = id);
 
 CREATE POLICY "Admins can view all profiles" ON profiles
-  FOR SELECT USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
-  );
+  FOR SELECT USING (public.is_admin());
 
 CREATE POLICY "Admins can insert profiles" ON profiles
-  FOR INSERT WITH CHECK (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
-  );
+  FOR INSERT WITH CHECK (public.is_admin());
 
 -- Company settings - only admins
 CREATE POLICY "Admins full access to company_settings" ON company_settings
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+    public.is_admin()
   );
 
 -- Furniture categories - public read published, admin write
@@ -227,7 +242,7 @@ CREATE POLICY "Public read active categories" ON furniture_categories
 
 CREATE POLICY "Admins full access to categories" ON furniture_categories
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+    public.is_admin()
   );
 
 -- Wood types - public read active, admin write
@@ -236,7 +251,7 @@ CREATE POLICY "Public read active wood types" ON wood_types
 
 CREATE POLICY "Admins full access to wood types" ON wood_types
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+    public.is_admin()
   );
 
 -- Materials - public read active, admin write
@@ -245,7 +260,7 @@ CREATE POLICY "Public read active materials" ON materials
 
 CREATE POLICY "Admins full access to materials" ON materials
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+    public.is_admin()
   );
 
 -- Furniture items - public read published, admin full
@@ -254,7 +269,7 @@ CREATE POLICY "Public read published furniture" ON furniture_items
 
 CREATE POLICY "Admins full access to furniture" ON furniture_items
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+    public.is_admin()
   );
 
 -- Proformas - users see own, admins see all
@@ -271,7 +286,7 @@ CREATE POLICY "Users update own draft proformas" ON proformas
 
 CREATE POLICY "Admins full access to proformas" ON proformas
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+    public.is_admin()
   );
 
 -- Proforma items
@@ -286,7 +301,7 @@ CREATE POLICY "Users access items of own proformas" ON proforma_items
 
 CREATE POLICY "Admins full access to proforma items" ON proforma_items
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+    public.is_admin()
   );
 
 -- 3D Videos - public read active, admin write
@@ -295,13 +310,13 @@ CREATE POLICY "Public read active videos" ON videos_3d
 
 CREATE POLICY "Admins full access to videos" ON videos_3d
   FOR ALL USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+    public.is_admin()
   );
 
 -- Agent activities - admin only
 CREATE POLICY "Admins read agent activities" ON agent_activities
   FOR SELECT USING (
-    EXISTS (SELECT 1 FROM profiles WHERE id = auth.uid() AND role = 'admin')
+    public.is_admin()
   );
 
 CREATE POLICY "System inserts agent activities" ON agent_activities
@@ -366,6 +381,45 @@ BEGIN
   WHERE pi.proforma_id = p_proforma_id;
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- =====================================================================
+-- Auto-crear perfil al registrarse + primer usuario = admin
+-- =====================================================================
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
+AS $$
+DECLARE
+  v_is_first_user BOOLEAN;
+  v_role TEXT := 'client';
+BEGIN
+  -- El primer usuario registrado en el sistema es admin
+  SELECT NOT EXISTS (SELECT 1 FROM public.profiles) INTO v_is_first_user;
+  IF v_is_first_user THEN
+    v_role := 'admin';
+  END IF;
+
+  INSERT INTO public.profiles (id, email, full_name, role)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name'),
+    v_role
+  )
+  ON CONFLICT (id) DO UPDATE SET
+    email = EXCLUDED.email,
+    full_name = COALESCE(EXCLUDED.full_name, public.profiles.full_name);
+
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
 -- Insert default company settings
 INSERT INTO company_settings (name, material_label, default_notes)

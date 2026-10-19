@@ -20,6 +20,9 @@ import { cn } from "@/lib/utils"
 import { AgentAvatar } from "@/components/agent-avatars"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
 
+// El panel admin depende de la sesión (cookies) -> layout bloqueante.
+export const instant = false
+
 export default async function AdminLayout({
   children,
 }: {
@@ -31,7 +34,7 @@ export default async function AdminLayout({
     redirect("/client")
   }
 
-  const supabase = createServerSupabaseClient()
+  const supabase = await createServerSupabaseClient()
   
   // Get company settings for logo
   const { data: company } = await supabase
@@ -95,7 +98,7 @@ export default async function AdminLayout({
               >
                 <item.icon className="h-5 w-5 flex-shrink-0" />
                 <span className="flex-1 truncate">{item.name}</span>
-                {item.badge !== undefined && item.badge > 0 && (
+                {item.badge != null && item.badge > 0 && (
                   <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-medium px-1.5">
                     {item.badge > 99 ? "99+" : item.badge}
                   </span>

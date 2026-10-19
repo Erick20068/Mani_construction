@@ -47,7 +47,7 @@ export const materialSchema = z.object({
   stock: z.number().int().min(0).default(0),
   min_stock_alert: z.number().int().min(0).default(10),
   supplier: z.string().max(200).optional().nullable(),
-  specs: z.record(z.unknown()).default({}),
+  specs: z.record(z.string(), z.unknown()).default({}),
   is_active: z.boolean().default(true),
 })
 
@@ -90,7 +90,7 @@ export const proformaItemSchema = z.object({
   description: z.string().min(1, 'La descripción es requerida').max(500),
   quantity: z.number().int().positive(),
   unit_price: z.number().positive(),
-  customizations: z.record(z.unknown()).default({}),
+  customizations: z.record(z.string(), z.unknown()).default({}),
 })
 
 export const proformaSchema = z.object({

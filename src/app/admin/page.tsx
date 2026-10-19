@@ -13,7 +13,8 @@ import {
   Clock,
   CheckCircle,
   AlertTriangle,
-  DollarSign
+  DollarSign,
+  Sparkles
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
@@ -78,8 +79,11 @@ const quickActions = [
   },
 ]
 
+// Panel admin: datos de Supabase con sesión (cookies) -> ruta bloqueante.
+export const instant = false
+
 export default async function AdminDashboardPage() {
-  const supabase = createServerSupabaseClient()
+  const supabase = await createServerSupabaseClient()
 
   // Get stats
   const [

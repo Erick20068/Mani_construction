@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, Suspense } from "react"
 import Link from "next/link"
 import { useRouter, useSearchParams } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -25,6 +25,22 @@ import { toast } from "sonner"
 import { createClient } from "@/lib/supabase"
 
 export default function RegisterPage() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <RegisterForm />
+    </Suspense>
+  )
+}
+
+function PageLoader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <Loader2 className="h-8 w-8 text-primary animate-spin" />
+    </div>
+  )
+}
+
+function RegisterForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const redirectTo = searchParams.get("redirect") || "/client"
@@ -37,7 +53,7 @@ export default function RegisterPage() {
   })
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
-  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({})
 
   const supabase = createClient()
 

@@ -33,14 +33,20 @@ export const metadata: Metadata = {
   description: "Explora nuestra colección de muebles personalizados en maderas nobles",
 }
 
+// La consulta a Supabase usa cookies (sesión) y datos no cacheables:
+// la ruta es bloqueante por diseño.
+export const instant = false
+
+// Los iconos se pasan como string: las funciones de componente no pueden
+// serializarse de un Server Component a un Client Component.
 const categories = [
-  { id: "all", name: "Todos", icon: Box },
-  { id: "sala", name: "Sala", icon: Box },
-  { id: "comedor", name: "Comedor", icon: Box },
-  { id: "dormitorio", name: "Dormitorio", icon: Box },
-  { id: "oficina", name: "Oficina", icon: Box },
-  { id: "exterior", name: "Exterior", icon: TreePine },
-  { id: "personalizado", name: "Personalizado", icon: Sparkles },
+  { id: "all", name: "Todos", icon: "box" },
+  { id: "sala", name: "Sala", icon: "box" },
+  { id: "comedor", name: "Comedor", icon: "box" },
+  { id: "dormitorio", name: "Dormitorio", icon: "box" },
+  { id: "oficina", name: "Oficina", icon: "box" },
+  { id: "exterior", name: "Exterior", icon: "tree" },
+  { id: "personalizado", name: "Personalizado", icon: "sparkles" },
 ]
 
 const woodTypes = [
@@ -76,7 +82,7 @@ export default async function CatalogoPage({
   const page = params.page ? Number(params.page) : 1
   const pageSize = 12
 
-  const supabase = createServerSupabaseClient()
+  const supabase = await createServerSupabaseClient()
 
   // Build query
   let query = supabase

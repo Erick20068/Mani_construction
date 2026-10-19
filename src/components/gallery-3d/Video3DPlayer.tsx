@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useState, useEffect, useCallback } from "react"
+import { useRef, useState, useEffect, useCallback, Suspense } from "react"
 import { Canvas, useFrame, useThree, extend } from "@react-three/fiber"
 import { 
   OrbitControls, 
@@ -14,6 +14,7 @@ import {
   CameraShake
 } from "@react-three/drei"
 import * as THREE from "three"
+import { GLTFLoader, type GLTF } from "three/examples/jsm/loaders/GLTFLoader.js"
 import { 
   PlayCircle, 
   PauseCircle, 
@@ -26,15 +27,19 @@ import {
   Download,
   Eye,
   Share2,
-  Loader2
+  Loader2,
+  AlertCircle,
+  Video,
+  X
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { toast } from "sonder"
+import { Badge } from "@/components/ui/badge"
+import { toast } from "sonner"
 
 // Extend Three.js types
-extend(THREE)
+extend(THREE as any)
 
 interface Video3DPlayerProps {
   videoUrl: string
@@ -286,6 +291,8 @@ export function Video3DPlayer({
   const hasModel = !!modelUrl
   const hasVideo = !!videoUrl
   const currentMode = availableMode()
+  const showVideoLayer = mode === 'video' || mode === 'hybrid'
+  const showModelLayer = mode === 'model' || mode === 'hybrid'
 
   return (
     <div 
@@ -298,7 +305,7 @@ export function Video3DPlayer({
       style={{ aspectRatio: '16/9' }}
     >
       {/* Video Mode */}
-      {(mode === 'video' || mode === 'hybrid') && hasVideo && (
+      {showVideoLayer && hasVideo && (
         <div className="absolute inset-0">
           <video
             ref={videoRef}
@@ -319,8 +326,6 @@ export function Video3DPlayer({
               }
             }}
             muted={isMuted}
-            volume={volume}
-            playbackRate={playbackRate}
           />
           
           {/* Video Loading Overlay */}
@@ -331,18 +336,16 @@ export function Video3DPlayer({
       )}
 
       {/* 3D Model Mode */}
-      {(mode === 'model' || mode === 'hybrid') && hasModel && (
+      {showModelLayer && hasModel && (
         <div className="absolute inset-0 z-20">
           <ModelViewer
             modelUrl={modelUrl}
             onLoad={() => setModelLoaded(true)}
             onError={(err) => {
               setModelError(err.message)
-              if (mode === 'hybrid' && hasVideo) {
-                setMode('video')
-              }
+              setMode((current) => (current === 'hybrid' ? 'video' : current))
             }}
-            autoPlay={autoPlay && mode !== 'video'}
+            autoPlay={autoPlay && !showVideoLayer}
           />
           
           {/* Model Loading Overlay */}
@@ -530,7 +533,9 @@ export function Video3DPlayer({
             }}
             onInput={(e) => {
               const target = e.target as HTMLInputElement
-              const percent = (target.value - target.min) / (target.max - target.min)
+              const min = Number(target.min) || 0
+              const max = Number(target.max) || 0
+              const percent = max === min ? 0 : (Number(target.value) - min) / (max - min)
               target.style.setProperty('--thumb-width', `${percent * 100}%`)
               target.style.setProperty('--thumb-color', '#3b82f6')
             }}
@@ -651,17 +656,17 @@ function ModelViewer({
   autoPlay: boolean
 }) {
   const { scene, camera } = useThree()
-  const modelRef = useRef<THREE.Group>(null)
-  const animationMixerRef = useRef<THREE.AnimationMixer>()
+  const modelRef = useRef<THREE.Group | null>(null)
+  const animationMixerRef = useRef<THREE.AnimationMixer | undefined>(undefined)
   const [animations, setAnimations] = useState<THREE.AnimationClip[]>([])
 
   useEffect(() => {
     let mounted = true
-    
-    const loader = new THREE.GLTFLoader()
+
+    const loader = new GLTFLoader()
     loader.load(
       modelUrl,
-      (gltf) => {
+      (gltf: GLTF) => {
         if (!mounted) return
         
         const model = gltf.scene
@@ -682,7 +687,7 @@ function ModelViewer({
         model.position.sub(center)
         
         // Enable shadows
-        model.traverse((child) => {
+        model.traverse((child: THREE.Object3D) => {
           if (child instanceof THREE.Mesh) {
             child.castShadow = true
             child.receiveShadow = true
@@ -692,35 +697,37 @@ function ModelViewer({
             }
           }
         })
-        
+
         scene.add(model)
-        
+
         // Camera positioning
         camera.position.set(0, 1, 3)
         camera.lookAt(0, 0, 0)
-        
+
         // Animations
         if (gltf.animations.length > 0) {
           const mixer = new THREE.AnimationMixer(model)
           animationMixerRef.current = mixer
           setAnimations(gltf.animations)
-          
+
           if (autoPlay) {
-            gltf.animations.forEach((clip) => {
+            gltf.animations.forEach((clip: THREE.AnimationClip) => {
               mixer.clipAction(clip).play()
             })
           }
         }
-        
+
         onLoad()
       },
-      (xhr) => {
+      (xhr: ProgressEvent) => {
         // Progress
-        console.log(`Loading model: ${(xhr.loaded / xhr.total * 100)}%`)
+        if (xhr.total > 0) {
+          console.log(`Loading model: ${(xhr.loaded / xhr.total * 100).toFixed(0)}%`)
+        }
       },
-      (error) => {
+      (error: unknown) => {
         if (mounted) {
-          onError(error)
+          onError(error instanceof Error ? error : new Error("Error al cargar el modelo 3D"))
         }
       }
     )
@@ -729,9 +736,8 @@ function ModelViewer({
       mounted = false
       if (modelRef.current) {
         scene.remove(modelRef.current)
-      }
-      if (animationMixerRef.current) {
-        animationMixerRef.current.uncacheRoot(modelRef.current!)
+        animationMixerRef.current?.uncacheRoot(modelRef.current)
+        modelRef.current = null
       }
     }
   }, [modelUrl, scene, camera, onLoad, onError, autoPlay])
@@ -741,9 +747,10 @@ function ModelViewer({
     if (animationMixerRef.current) {
       animationMixerRef.current.update(delta)
     }
-    
+
     // Auto-rotate when no user interaction
-    if (modelRef.current && !state.pointer.isDown) {
+    const pointerDown = (state.pointer as unknown as { isDown?: boolean }).isDown
+    if (modelRef.current && !pointerDown) {
       modelRef.current.rotation.y += delta * 0.1
     }
   })
@@ -831,11 +838,11 @@ function ARCanvas({ modelUrl, title }: { modelUrl: string; title: string }) {
 
 // AR Model Component
 function ARModel({ modelUrl }: { modelUrl: string }) {
-  const modelRef = useRef<THREE.Group>(null)
-  
+  const modelRef = useRef<THREE.Group | null>(null)
+
   useEffect(() => {
-    const loader = new THREE.GLTFLoader()
-    loader.load(modelUrl, (gltf) => {
+    const loader = new GLTFLoader()
+    loader.load(modelUrl, (gltf: GLTF) => {
       const model = gltf.scene
       modelRef.current = model
       
@@ -851,7 +858,7 @@ function ARModel({ modelUrl }: { modelUrl: string }) {
       model.position.sub(center)
       model.position.y = 0 // On ground
       
-      model.traverse((child) => {
+      model.traverse((child: THREE.Object3D) => {
         if (child instanceof THREE.Mesh) {
           child.castShadow = true
           child.receiveShadow = true
@@ -860,6 +867,7 @@ function ARModel({ modelUrl }: { modelUrl: string }) {
     })
   }, [modelUrl])
 
+  if (!modelRef.current) return null
   return <primitive object={modelRef.current} dispose={null} />
 }
 
@@ -1037,29 +1045,27 @@ function LoadingModel() {
 }
 
 function ModelComponent({ modelUrl }: { modelUrl: string }) {
-  const groupRef = useRef<THREE.Group>(null)
-  
+  const groupRef = useRef<THREE.Group | null>(null)
+
   useEffect(() => {
-    const loader = new THREE.GLTFLoader()
-    loader.load(modelUrl, (gltf) => {
+    const loader = new GLTFLoader()
+    loader.load(modelUrl, (gltf: GLTF) => {
       const model = gltf.scene
       groupRef.current = model
-      
+
       // Normalize scale
       const box = new THREE.Box3().setFromObject(model)
       const size = box.getSize(new THREE.Vector3())
       const maxDim = Math.max(size.x, size.y, size.z)
       const scale = 2 / maxDim
       model.scale.setScalar(scale)
-      
+
       box.setFromObject(model)
       const center = box.getCenter(new THREE.Vector3())
       model.position.sub(center)
     })
   }, [modelUrl])
 
+  if (!groupRef.current) return null
   return <primitive object={groupRef.current} dispose={null} />
 }
-
-import { Suspense } from "react"
-import { AlertCircle, X } from "lucide-react"
