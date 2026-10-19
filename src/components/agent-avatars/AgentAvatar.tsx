@@ -39,12 +39,32 @@ interface AvatarDefinition {
 
 export interface AgentAvatarProps {
   agentType: AgentType
-  status?: keyof typeof AGENT_STATUS_ANIMATIONS
+  /** Estado generico (working/thinking...) o nombre directo de animacion */
+  status?: string
   size?: number
   className?: string
   showName?: boolean
   showTitle?: boolean
   onClick?: () => void
+}
+
+/**
+ * Resuelve el estado (working/thinking/...) a una animación concreta que
+ * exista en el avatar. Cada avatar tiene sus propios nombres de animación
+ * (coding, architecting, training...), asi que se busca la primera coincidencia.
+ */
+function resolveAnimation(avatarDef: AvatarDefinition, status: string): string {
+  // 1. El estado es directamente una animacion de este avatar
+  if (avatarDef.animations[status]) return status
+
+  // 2. Buscar en el mapeo generico de estados
+  const candidates = AGENT_STATUS_ANIMATIONS[status] || []
+  for (const candidate of candidates) {
+    if (avatarDef.animations[candidate]) return candidate
+  }
+
+  // 3. Primera animacion del ciclo
+  return avatarDef.animationOrder?.[0] || "idle"
 }
 
 export function AgentAvatar({
@@ -106,9 +126,10 @@ export function AgentAvatar({
 
     // Referencia local para mantener el narrowing de tipos dentro del closure
     const def = avatarDef
+    const animationName = resolveAnimation(def, currentAnimation)
 
     const animation =
-      def.animations[currentAnimation] ||
+      def.animations[animationName] ||
       def.animations[def.animationOrder?.[0]] ||
       def.animations.idle
 

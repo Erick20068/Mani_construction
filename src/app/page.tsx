@@ -246,6 +246,7 @@ export default function HomePage() {
                 <li><Link href="/galeria-3d" className="hover:text-primary transition-colors">Galería 3D</Link></li>
                 <li><Link href="/proformas" className="hover:text-primary transition-colors">Proformas</Link></li>
                 <li><Link href="/materiales" className="hover:text-primary transition-colors">Materiales</Link></li>
+                <li><Link href="/cerebro" className="hover:text-primary transition-colors">Cerebro (agentes)</Link></li>
               </ul>
             </nav>
             <nav>
