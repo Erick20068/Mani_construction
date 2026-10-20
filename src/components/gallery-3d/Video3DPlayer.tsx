@@ -645,11 +645,55 @@ export function Video3DPlayer({
 
 // 3D Model Viewer Component
 function ModelViewer({ 
-  modelUrl, 
-  onLoad, 
-  onError, 
-  autoPlay = true 
-}: { 
+  modelUrl,
+  onLoad,
+  onError,
+  autoPlay = true
+}: {
+  modelUrl: string
+  onLoad: () => void
+  onError: (err: Error) => void
+  autoPlay: boolean
+}) {
+  // El Canvas envuelve la escena: los hooks de R3F solo funcionan dentro.
+  return (
+    <Canvas
+      camera={{ position: [0, 1.4, 4], fov: 45 }}
+      gl={{ antialias: true, alpha: true }}
+      onCreated={({ gl }) => {
+        gl.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      }}
+      style={{ width: "100%", height: "100%" }}
+    >
+      <color attach="background" args={["#05070f"]} />
+      <ambientLight intensity={0.7} />
+      <directionalLight position={[4, 6, 4]} intensity={1.2} />
+      <pointLight position={[0, 2, 2]} intensity={0.8} color="#ffffff" />
+      <ModelScene
+        modelUrl={modelUrl}
+        onLoad={onLoad}
+        onError={onError}
+        autoPlay={autoPlay}
+      />
+      <OrbitControls
+        enablePan={false}
+        minDistance={1.5}
+        maxDistance={12}
+        target={[0, 0, 0]}
+        autoRotate={autoPlay}
+        autoRotateSpeed={1.2}
+      />
+    </Canvas>
+  )
+}
+
+/** Escena del modelo: va dentro del Canvas para poder usar los hooks de R3F */
+function ModelScene({
+  modelUrl,
+  onLoad,
+  onError,
+  autoPlay,
+}: {
   modelUrl: string
   onLoad: () => void
   onError: (err: Error) => void

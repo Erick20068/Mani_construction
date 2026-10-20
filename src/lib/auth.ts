@@ -60,7 +60,14 @@ export async function requireClient() {
     .eq('id', session.user.id)
     .single()
 
-  if (!['client', 'admin'].includes(profile?.role || '')) {
+  const role = profile?.role || ''
+
+  if (role === 'viewer') {
+    // El visitante solo navega: lo mandamos al catálogo
+    redirect('/catalogo')
+  }
+
+  if (!['client', 'admin'].includes(role)) {
     redirect('/login')
   }
   return session

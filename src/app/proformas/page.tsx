@@ -45,6 +45,7 @@ import {
 import { cn } from "@/lib/utils"
 import { formatCurrency } from "@/lib/utils"
 import { createClient } from "@/lib/supabase"
+import { createProforma } from "@/app/proformas/actions"
 import { toast } from "sonner"
 
 interface FurnitureItem {
@@ -115,6 +116,7 @@ function ProformasBuilder() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const productParam = searchParams.get("product")
+  const qtyParam = searchParams.get("qty")
 
   const [cartItems, setCartItems] = useState<CartItem[]>([])
   const [availableItems, setAvailableItems] = useState<FurnitureItem[]>([])
@@ -160,18 +162,24 @@ function ProformasBuilder() {
     }
   }
 
-  // Add item from URL param
+  // Add item from URL param (el catalogo y el configurador pasan el slug)
   useEffect(() => {
-    if (productParam && cartItems.length === 0) {
-      const item = availableItems.find(i => i.id === productParam)
+    if (productParam && cartItems.length === 0 && availableItems.length > 0) {
+      // Se acepta slug o id
+      const item = availableItems.find(
+        (i) => i.slug === productParam || i.id === productParam
+      )
       if (item) {
-        addToCart(item)
-        toast.success(`${item.name} agregado a la proforma`)
+        const qty = Math.max(1, Number(qtyParam) || 1)
+        addToCart(item, qty)
+        toast.success(
+          `${item.name} agregado a la proforma${qty > 1 ? ` (${qty})` : ""}`
+        )
         // Clean URL
         window.history.replaceState({}, document.title, "/proformas")
       }
     }
-  }, [productParam, availableItems, cartItems.length])
+  }, [productParam, qtyParam, availableItems, cartItems.length])
 
   const categories = [...new Set(availableItems.map(i => i.furniture_categories?.slug).filter(Boolean))] as string[]
 
@@ -186,17 +194,17 @@ function ProformasBuilder() {
   const tax = Math.round(subtotal * 0.18 * 100) / 100
   const total = subtotal + tax
 
-  const addToCart = (item: FurnitureItem) => {
+  const addToCart = (item: FurnitureItem, quantity = 1) => {
     setCartItems(prev => {
       const existing = prev.find(i => i.furniture_id === item.id && JSON.stringify(i.customizations) === JSON.stringify({}))
       if (existing) {
-        return prev.map(i => i.id === existing.id ? { ...i, quantity: i.quantity + 1 } : i)
+        return prev.map(i => i.id === existing.id ? { ...i, quantity: i.quantity + quantity } : i)
       }
       return [...prev, {
         id: crypto.randomUUID(),
         furniture_id: item.id,
         furniture: item,
-        quantity: 1,
+        quantity,
         customizations: {},
         calculated_price: item.base_price,
       }]
@@ -253,54 +261,40 @@ function ProformasBuilder() {
     setIsGenerating(true)
 
     try {
-      const proformaItems = cartItems.map((item, index) => ({
+      const proformaItems = cartItems.map((item) => ({
         furniture_id: item.furniture_id,
         custom_name: item.furniture.name,
-        description: `${item.furniture.name}${Object.keys(item.customizations).length ? ` - ${JSON.stringify(item.customizations)}` : ''}`,
+        description: `${item.furniture.name}${Object.keys(item.customizations).length ? ` - ${Object.entries(item.customizations).map(([k, v]) => `${k}: ${v}`).join(", ")}` : ""}`,
         quantity: item.quantity,
         unit_price: item.calculated_price,
         total_price: item.calculated_price * item.quantity,
         customizations: item.customizations,
-        sort_order: index,
       }))
 
-      const { data: proforma, error } = await supabase
-        .from("proformas")
-        .insert({
-          client_name: clientFormData.client_name,
-          client_ruc: clientFormData.client_ruc || null,
-          client_phone: clientFormData.client_phone || null,
-          client_address: clientFormData.client_address || null,
-          client_email: clientFormData.client_email || null,
-          material_label: clientFormData.material_label,
-          deposit: clientFormData.deposit,
-          notes: clientFormData.notes,
-          valid_until: clientFormData.valid_until,
-          status: "draft",
-          subtotal,
-          tax,
-          total,
-        })
-        .select()
-        .single()
+      const result = await createProforma({
+        client_name: clientFormData.client_name,
+        client_ruc: clientFormData.client_ruc || null,
+        client_phone: clientFormData.client_phone || null,
+        client_address: clientFormData.client_address || null,
+        client_email: clientFormData.client_email || null,
+        material_label: clientFormData.material_label,
+        deposit: clientFormData.deposit,
+        notes: clientFormData.notes,
+        valid_until: clientFormData.valid_until,
+        items: proformaItems,
+      })
 
-      if (error) throw error
+      if (!result.ok) {
+        toast.error(result.message)
+        return
+      }
 
-      // Insert proforma items
-      const itemsToInsert = proformaItems.map(item => ({
-        ...item,
-        proforma_id: proforma.id,
-      }))
-
-      const { error: itemsError } = await supabase
-        .from("proforma_items")
-        .insert(itemsToInsert)
-
-      if (itemsError) throw itemsError
-
-      toast.success("Proforma creada exitosamente")
+      toast.success(
+        `Proforma N° ${String(result.number).padStart(5, "0")} creada`
+      )
       setShowClientForm(false)
-      router.push(`/admin/proformas/${proforma.id}`)
+      setCartItems([])
+      router.push(`/proformas/${result.id}`)
     } catch (err) {
       console.error("Error generating proforma:", err)
       toast.error("Error al generar la proforma")
@@ -316,8 +310,10 @@ function ProformasBuilder() {
         <div className="container mx-auto px-6 py-4">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-4">
-              <Button variant="ghost" size="sm" onClick={() => router.back()}>
-                <ArrowLeft className="h-4 w-4" />
+              <Button variant="ghost" size="sm" asChild>
+                <Link href="/catalogo" aria-label="Volver al catálogo">
+                  <ArrowLeft className="h-4 w-4" />
+                </Link>
               </Button>
               <div>
                 <h1 className="text-2xl font-bold text-foreground">Generador de Proformas</h1>

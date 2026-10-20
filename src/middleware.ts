@@ -70,7 +70,11 @@ export async function middleware(request: NextRequest) {
     if (profile?.role === 'admin') {
       return NextResponse.redirect(new URL('/admin', request.url))
     }
-    return NextResponse.redirect(new URL('/client', request.url))
+    if (profile?.role === 'client') {
+      return NextResponse.redirect(new URL('/client', request.url))
+    }
+    // Los visitantes solo navegan el catalogo
+    return NextResponse.redirect(new URL('/catalogo', request.url))
   }
 
   // Admin-only routes
@@ -82,7 +86,9 @@ export async function middleware(request: NextRequest) {
       .single()
 
     if (profile?.role !== 'admin') {
-      return NextResponse.redirect(new URL('/client', request.url))
+      return NextResponse.redirect(
+        new URL(profile?.role === 'client' ? '/client' : '/catalogo', request.url)
+      )
     }
   }
 

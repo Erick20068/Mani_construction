@@ -46,6 +46,24 @@ await shot("/register", "06-register")
 await shot("/demo-3d", "07-demo-3d")
 await shot("/privacidad", "10-privacidad")
 await shot("/terminos", "11-terminos")
+await shot("/nosotros", "14-nosotros")
+await shot("/proyectos", "15-proyectos")
+await shot("/materiales", "16-materiales")
+await shot("/configurador", "17-configurador")
+await shot("/faq", "18-faq")
+await shot("/contacto", "19-contacto")
+await shot("/catalogo/sofa-modular-roble", "12-ficha-producto")
+
+// Galeria con el reproductor abierto
+await shot("/galeria-3d", "20-galeria-player", {
+  before: async (page) => {
+    const play = page.locator('button[aria-label^="Reproducir"]').first()
+    if (await play.count()) {
+      await play.click({ force: true })
+      await page.waitForTimeout(3000)
+    }
+  },
+})
 
 // El taller: antes y despues de encender
 await shot("/taller", "08-taller-apagado")

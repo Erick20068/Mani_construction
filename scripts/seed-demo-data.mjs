@@ -25,7 +25,7 @@ const FURNITURE = [
     category: "sala",
     wood: "roble",
     price: 3480,
-    images: [`${IMG}/sofa-modular-roble.png`],
+    images: [`${IMG}/sofa-modular-roble.svg`],
     description:
       "Sofá modular de tres plazas en roble macizo con cojines de lino natural y tapering de madera vista. Estructura reforzada, patas de metal negro mate y sistema modular de tres elementos que permite recomponer el sal�n. Fabricado a medida, con espuma de alta densidad de alta densidad.",
     dims: { width: 220, height: 85, depth: 95, unit: "cm" },
@@ -39,7 +39,7 @@ const FURNITURE = [
     category: "comedor",
     wood: "nogal",
     price: 4250,
-    images: [`${IMG}/mesa-comedor-nogal.png`],
+    images: [`${IMG}/mesa-comedor-nogal.svg`],
     description:
       "Mesa de comedor extensible en nogal con sistema de apertura sincronizado de 160 a 240 cm. Tablero de 4 cm con canto macizo, base en cruz y herrajes ocultos de acero. Acompaña con ocho sillas de fresno con rejilla de cordón trenzado a mano.",
     dims: { width: 240, height: 76, depth: 100, unit: "cm" },
@@ -53,7 +53,7 @@ const FURNITURE = [
     category: "dormitorio",
     wood: "cedro",
     price: 2890,
-    images: [`${IMG}/cama-cabecero-cedro.png`],
+    images: [`${IMG}/cama-cabecero-cedro.svg`],
     description:
       "Cama matrimonial con cabecero de listones de cedro aromático, acolchado de lino crudo y base de madera maciza. Listones curvados con encastre invisible, acabado al aceite y somier de resortes pocket.",
     dims: { width: 170, height: 110, depth: 210, unit: "cm" },
@@ -67,7 +67,7 @@ const FURNITURE = [
     category: "oficina",
     wood: "cerezo",
     price: 1980,
-    images: [`${IMG}/escritorio-cerezo.png`],
+    images: [`${IMG}/escritorio-cerezo.svg`],
     description:
       "Escritorio de trabajo en cerezo con cajonera de tres cajones y herrajes de latón cepillado. Tablero de 30 mm, base de acero powder-coated y pasacables integrado. Ideal para home office o estudio profesional.",
     dims: { width: 140, height: 75, depth: 70, unit: "cm" },
@@ -81,7 +81,7 @@ const FURNITURE = [
     category: "comedor",
     wood: "fresno",
     price: 420,
-    images: [`${IMG}/sila-fresno-rejilla.png`.replace("sila", "silla")],
+    images: [`${IMG}/silla-fresno-rejilla.svg`],
     description:
       "Silla de comedor en fresno con asiento de rejilla de cordón trenzado a mano y respaldo curvado. Ergonía probada durante años, tratamiento de madera con aceite natural yEnsamblaje de espiga y clavado.",
     dims: { width: 48, height: 88, depth: 52, unit: "cm" },
@@ -95,7 +95,7 @@ const FURNITURE = [
     category: "dormitorio",
     wood: "teka",
     price: 3650,
-    images: [`${IMG}/armario-teka-espejo.png`],
+    images: [`${IMG}/armario-teka-espejo.svg`],
     description:
       "Armario de tres puertas en teka con tiradores de bronce y espejo en la puerta central. Interior con estantes regulables, cajones con guía Blumsoft yPerfilería de aluminio anodizado.",
     dims: { width: 180, height: 210, depth: 60, unit: "cm" },
@@ -109,7 +109,7 @@ const FURNITURE = [
     category: "sala",
     wood: "pino",
     price: 1240,
-    images: [`${IMG}/estanteria-pino-modular.png`],
+    images: [`${IMG}/estanteria-pino-modular.svg`],
     description:
       "Estantería modular de pino con cinco baldas y respaldo de contrachapado. Diseño minimalista cálido, ensamblajehidden de ranuras y herrajes, capacidad de 30 kg por balda. Se entrega en dos módulos de 90 cm.",
     dims: { width: 180, height: 200, depth: 35, unit: "cm" },
@@ -123,7 +123,7 @@ const FURNITURE = [
     category: "sala",
     wood: "caoba",
     price: 890,
-    images: [`${IMG}/mesa-centro-caoba.png`],
+    images: [`${IMG}/mesa-centro-caoba.svg`],
     description:
       "Mesa de centro redonda en caoba con base trípode torneada. Tablero de 60 cm confilo de canto y barniz poliuretano de alta resistencia. Acompaña con dos Chairs de lazuli y una lámpara de latón.",
     dims: { width: 60, height: 45, depth: 60, unit: "cm" },
@@ -137,7 +137,7 @@ const FURNITURE = [
     category: "personalizado",
     wood: "caoba",
     price: 760,
-    images: [`${IMG}/banco-perchero-caoba.png`],
+    images: [`${IMG}/banco-perchero-caoba.svg`],
     description:
       "Banco perchero en caoba con respaldo de listones y balda inferior para calzado. Pieza versatile para recibidor o dormitorio, con ganchos de latónIntegrated y acabado encerado.",
     dims: { width: 120, height: 175, depth: 38, unit: "cm" },
@@ -151,7 +151,7 @@ const FURNITURE = [
     category: "comedor",
     wood: "nogal",
     price: 6890,
-    images: [`${IMG}/comedor-completo-8.png`],
+    images: [`${IMG}/comedor-completo-8.svg`],
     description:
       "Conjunto de comedor para ocho personas en nogal: mesa de 240 cm y ocho sillas de fresno con rejilla. Precio del conjunto completo con descuento aplicado respecto a la compra por separado. Incluye montaje en obra.",
     dims: { width: 240, height: 76, depth: 100, unit: "cm" },
@@ -362,7 +362,7 @@ for (const v of VIDEOS) {
     title: v.title,
     description: v.description,
     video_url: DEMO_VIDEOS[v.art] ?? DEMO_VIDEOS["sofa-modular-roble"],
-    thumbnail_url: `${IMG}/${v.art}.png`,
+    thumbnail_url: `${IMG}/${v.art}.svg`,
     duration_seconds: v.duration,
     type: v.type,
     display_order: v.order,

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useMemo } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
@@ -23,7 +23,8 @@ import {
   ExternalLink,
   Loader2,
   Video,
-  Sparkles
+  Sparkles,
+  ShoppingCart
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { formatCurrency } from "@/lib/utils"
@@ -91,6 +92,18 @@ export function CatalogoClient({
   const [searchQuery, setSearchQuery] = useState("")
   const [selectedCategory, setSelectedCategory] = useState("all")
   const [isLoading, setIsLoading] = useState(false)
+  const [showFilters, setShowFilters] = useState(false)
+
+  // Cuantos filtros hay activos (para el boton y el contador)
+  const activeFilterCount = useMemo(() => {
+    let n = 0
+    if (category !== "all") n++
+    if (wood !== "all") n++
+    if (minPrice !== undefined) n++
+    if (maxPrice !== undefined) n++
+    if (sort !== "newest") n++
+    return n
+  }, [category, wood, minPrice, maxPrice, sort])
 
   const pageSize = 12
 
@@ -171,7 +184,12 @@ export function CatalogoClient({
         <div className="container mx-auto px-6">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Sidebar Filters */}
-            <aside className="lg:w-64 flex-shrink-0">
+            <aside
+              className={cn(
+                "lg:w-64 flex-shrink-0",
+                showFilters ? "block" : "hidden lg:block"
+              )}
+            >
               <div className="sticky top-24 space-y-6">
                 {/* Category Filter */}
                 <div>
@@ -307,10 +325,35 @@ export function CatalogoClient({
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <Button variant="outline" size="sm" className="hidden sm:flex">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="lg:hidden"
+                    onClick={() => setShowFilters((v) => !v)}
+                  >
                     <Filter className="h-4 w-4 mr-1" />
                     Filtros
                   </Button>
+                  <span className="hidden sm:inline text-xs text-muted-foreground">
+                    {activeFilterCount > 0
+                      ? `${activeFilterCount} filtro${activeFilterCount > 1 ? "s" : ""} activo${activeFilterCount > 1 ? "s" : ""}`
+                      : "Sin filtros activos"}
+                  </span>
+                  {activeFilterCount > 0 && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      onClick={() => {
+                        setCategory("all")
+                        setWood("all")
+                        setMinPrice(undefined)
+                        setMaxPrice(undefined)
+                        handleFilterChange()
+                      }}
+                    >
+                      Limpiar
+                    </Button>
+                  )}
                 </div>
               </div>
 
@@ -323,9 +366,9 @@ export function CatalogoClient({
                 <>
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                     {filteredItems.map(item => (
-                      <CatalogItemCard 
-                        key={item.id} 
-                        item={item} 
+                      <CatalogItemCard
+                        key={item.id}
+                        item={item}
                         inCart={false}
                         onAdd={() => {}}
                       />
@@ -452,15 +495,16 @@ function CatalogItemCard({ item, inCart, onAdd }: { item: any; inCart: boolean; 
         </div>
         <div className="flex items-center justify-between pt-2 border-t border-border">
           <span className="text-xl font-bold text-foreground">{formatCurrency(Number(item.base_price))}</span>
-          <Button 
-            size="sm" 
-            variant="premium" 
+          <Button
+            asChild
+            size="sm"
+            variant="premium"
             className="gap-1"
-            onClick={() => onAdd(item)}
-            disabled={false}
           >
-            <Box className="h-3 w-3" />
-            Agregar
+            <Link href={`/proformas?product=${item.slug}`}>
+              <ShoppingCart className="h-3 w-3" />
+              Agregar
+            </Link>
           </Button>
         </div>
       </CardContent>

@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
+import { RoleBadge } from "@/components/auth/RoleBadge"
 import {
   ArrowRight,
   Boxes,
@@ -179,7 +180,7 @@ export default async function ClientDashboardPage() {
               </div>
               <div>
                 <p className="text-xs text-muted-foreground">Rol</p>
-                <p className="font-medium capitalize">{profile?.role}</p>
+                <RoleBadge role={profile?.role} className="mt-1" />
               </div>
             </CardContent>
           </Card>

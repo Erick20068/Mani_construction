@@ -1,11 +1,19 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog"
+import { Video3DPlayer } from "@/components/gallery-3d/Video3DPlayer"
 import { 
   Video, 
   Filter, 
@@ -54,6 +62,22 @@ const typeLabels = {
 }
 
 export default function Galeria3DPage() {
+  return (
+    <Suspense fallback={<PageLoader />}>
+      <Galeria3DContent />
+    </Suspense>
+  )
+}
+
+function PageLoader() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <Loader2 className="h-8 w-8 text-primary animate-spin" />
+    </div>
+  )
+}
+
+function Galeria3DContent() {
   const [videos, setVideos] = useState<Video3D[]>([])
   const [activeType, setActiveType] = useState<'showcase' | 'possible' | 'process'>('showcase')
   const [searchQuery, setSearchQuery] = useState("")
@@ -317,6 +341,63 @@ export default function Galeria3DPage() {
           </Card>
         </div>
       </section>
+
+      {/* Reproductor del video seleccionado */}
+      <Dialog open={!!selectedVideo} onOpenChange={(o) => !o && setSelectedVideo(null)}>
+        <DialogContent className="max-w-4xl p-0 overflow-hidden">
+          {selectedVideo && (
+            <>
+              <DialogHeader className="p-5 pb-3">
+                <DialogTitle>{selectedVideo.title}</DialogTitle>
+                <DialogDescription>
+                  {selectedVideo.description ||
+                    typeLabels[selectedVideo.type].label}
+                </DialogDescription>
+              </DialogHeader>
+
+              <div className="px-5 pb-5">
+                <Video3DPlayer
+                  videoUrl={selectedVideo.video_url}
+                  thumbnailUrl={selectedVideo.thumbnail_url ?? undefined}
+                  title={selectedVideo.title}
+                  description={selectedVideo.description ?? undefined}
+                  duration={selectedVideo.duration_seconds ?? undefined}
+                  type={selectedVideo.type}
+                  furnitureName={selectedVideo.furniture?.name}
+                  furnitureId={selectedVideo.furniture_id ?? undefined}
+                  autoPlay
+                />
+
+                <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+                  <Badge
+                    variant="outline"
+                    className={cn("gap-1", typeLabels[selectedVideo.type].color, "text-white border-0")}
+                  >
+                    {typeLabels[selectedVideo.type].label}
+                  </Badge>
+
+                  <div className="flex gap-2">
+                    {selectedVideo.furniture && (
+                      <Button asChild variant="outline" size="sm" className="gap-2">
+                        <Link href={`/catalogo/${selectedVideo.furniture.slug}`}>
+                          <Box className="h-4 w-4" />
+                          Ver el mueble
+                        </Link>
+                      </Button>
+                    )}
+                    <Button asChild variant="premium" size="sm" className="gap-2">
+                      <Link href="/proformas/nueva">
+                        <Download className="h-4 w-4" />
+                        Pedir proforma
+                      </Link>
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
@@ -351,8 +432,9 @@ function Video3DCard({ video, onSelect }: { video: Video3D; onSelect: (v: Video3
         {/* Play Button Overlay */}
         <button
           onClick={(e) => { e.preventDefault(); onSelect(video) }}
+          aria-label={`Reproducir ${video.title}`}
           className={cn(
-            "absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300",
+            "absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity duration-300",
             isHovered && "opacity-100"
           )}
         >

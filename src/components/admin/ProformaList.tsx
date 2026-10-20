@@ -2,6 +2,7 @@
 "use client"
 
 import { useState, useTransition } from "react"
+import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
@@ -21,6 +22,8 @@ import {
   Phone,
   Mail,
   Calendar,
+  Eye,
+  Download,
 } from "lucide-react"
 import { formatCurrency } from "@/lib/utils"
 import { deleteProforma, updateProformaStatus } from "@/app/admin/actions"
@@ -214,6 +217,26 @@ export function ProformaList({ proformas }: { proformas: ProformaRow[] }) {
                         )}
                       </div>
                       <div className="flex items-center justify-end gap-2">
+                        <Button
+                          asChild
+                          variant="outline"
+                          size="icon"
+                          title="Ver proforma"
+                        >
+                          <Link href={`/proformas/${p.id}`}>
+                            <Eye className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                        <Button
+                          asChild
+                          variant="outline"
+                          size="icon"
+                          title="Descargar PDF"
+                        >
+                          <a href={`/api/proformas/${p.id}/pdf`} download>
+                            <Download className="h-4 w-4" />
+                          </a>
+                        </Button>
                         <Select
                           value={p.status}
                           onValueChange={(v) =>

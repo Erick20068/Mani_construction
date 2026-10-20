@@ -14,10 +14,12 @@ import {
   ChevronLeft,
   Hammer,
   Sparkles,
-  Package
+  Package,
+  Users
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { AgentAvatar } from "@/components/agent-avatars"
+import { RoleBadge } from "@/components/auth/RoleBadge"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
 import { signOut } from "@/app/admin/actions"
 
@@ -65,6 +67,7 @@ export default async function AdminLayout({
     { name: "Materiales", href: "/admin/materiales", icon: TreePine, badge: lowStockMaterials },
     { name: "Proformas", href: "/admin/proformas", icon: FileText, badge: pendingProformas },
     { name: "Galería 3D", href: "/admin/videos-3d", icon: Video },
+    { name: "Usuarios", href: "/admin/usuarios", icon: Users },
     { name: "Configuración", href: "/admin/settings", icon: Settings },
   ]
 
@@ -138,6 +141,7 @@ export default async function AdminLayout({
                 <p className="text-sm font-medium text-foreground truncate">{profile.full_name || "Admin"}</p>
                 <p className="text-xs text-muted-foreground truncate">{profile.email}</p>
               </div>
+              <RoleBadge role={profile.role} className="shrink-0" />
             </div>
             <form action={signOut}>
               <Button
