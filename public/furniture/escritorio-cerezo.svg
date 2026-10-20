@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  
+  <defs>
+    <linearGradient id="bg-escritoriocerezo" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="60%" stop-color="#F1EBE1"/>
+      <stop offset="100%" stop-color="#E5DDD0"/>
+    </linearGradient>
+
+    <linearGradient id="wood-escritoriocerezo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="55%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-h-escritoriocerezo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="50%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-t-escritoriocerezo" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="70%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="linen-escritoriocerezo" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#E8E0D2"/>
+      <stop offset="100%" stop-color="#B8AB99"/>
+    </linearGradient>
+
+    <linearGradient id="metal-escritoriocerezo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5A6273"/>
+      <stop offset="45%" stop-color="#39404F"/>
+      <stop offset="100%" stop-color="#20242E"/>
+    </linearGradient>
+
+    <radialGradient id="spot-escritoriocerezo" cx="0.42" cy="0.28" r="0.75">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="grain-escritoriocerezo" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.035" numOctaves="4" seed="7" result="t"/>
+      <feColorMatrix in="t" type="saturate" values="0" result="g"/>
+      <feComponentTransfer in="g" result="g2">
+        <feFuncA type="linear" slope="0.16"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="g2" mode="multiply"/>
+    </filter>
+
+    <filter id="soft-escritoriocerezo" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+
+    <filter id="blur-sm-escritoriocerezo" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+
+    <filter id="drop-escritoriocerezo" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A3A28" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg-escritoriocerezo)"/>
+  <rect width="1200" height="1200" fill="url(#spot-escritoriocerezo)"/>
+  <g>
+    <ellipse cx="600" cy="890" rx="390" ry="44" fill="#6B543A" opacity="0.3" filter="url(#blur-sm-escritoriocerezo)"/>
+    <g filter="url(#drop-escritoriocerezo)">
+      <rect x="210" y="480" width="780" height="34" rx="10" fill="url(#wood-t-escritoriocerezo)"/>
+      <rect x="210" y="480" width="780" height="34" rx="10" fill="url(#wood-t-escritoriocerezo)" filter="url(#grain-escritoriocerezo)"/>
+      <rect x="210" y="514" width="780" height="12" rx="5" fill="#94573C"/>
+      <!-- cajonera -->
+      <rect x="700" y="526" width="270" height="280" rx="12" fill="url(#wood-escritoriocerezo)"/>
+      <rect x="700" y="526" width="270" height="280" rx="12" fill="url(#wood-escritoriocerezo)" filter="url(#grain-escritoriocerezo)"/>
+      <line x1="700" y1="620" x2="970" y2="620" stroke="#94573C" stroke-width="3" opacity="0.65"/>
+      <line x1="700" y1="712" x2="970" y2="712" stroke="#94573C" stroke-width="3" opacity="0.65"/>
+      <circle cx="835" cy="573" r="9" fill="url(#metal-escritoriocerezo)"/>
+      <circle cx="835" cy="666" r="9" fill="url(#metal-escritoriocerezo)"/>
+      <circle cx="835" cy="758" r="9" fill="url(#metal-escritoriocerezo)"/>
+      <!-- patas -->
+      <rect x="230" y="526" width="26" height="340" rx="8" fill="url(#wood-escritoriocerezo)"/>
+      <rect x="944" y="526" width="26" height="340" rx="8" fill="url(#wood-escritoriocerezo)"/>
+      <rect x="230" y="526" width="26" height="340" rx="8" fill="url(#wood-escritoriocerezo)" filter="url(#grain-escritoriocerezo)"/>
+      <rect x="944" y="526" width="26" height="340" rx="8" fill="url(#wood-escritoriocerezo)" filter="url(#grain-escritoriocerezo)"/>
+    </g>
+    <!-- monitor -->
+    <rect x="380" y="330" width="250" height="150" rx="10" fill="#20242E"/>
+    <rect x="392" y="342" width="226" height="126" rx="6" fill="#243247"/>
+    <rect x="488" y="480" width="34" height="14" fill="#39404F"/>
+    <rect x="440" y="494" width="130" height="12" rx="6" fill="#39404F"/>
+    <!-- teclado -->
+    <rect x="404" y="446" width="200" height="14" rx="6" fill="#5A6273" opacity="0.35"/>
+  </g>
+</svg>

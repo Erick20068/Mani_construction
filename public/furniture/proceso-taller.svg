@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  
+  <defs>
+    <linearGradient id="bg-procesotaller" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="60%" stop-color="#F1EBE1"/>
+      <stop offset="100%" stop-color="#E5DDD0"/>
+    </linearGradient>
+
+    <linearGradient id="wood-procesotaller" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="55%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-h-procesotaller" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="50%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-t-procesotaller" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="70%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="linen-procesotaller" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#E8E0D2"/>
+      <stop offset="100%" stop-color="#B8AB99"/>
+    </linearGradient>
+
+    <linearGradient id="metal-procesotaller" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5A6273"/>
+      <stop offset="45%" stop-color="#39404F"/>
+      <stop offset="100%" stop-color="#20242E"/>
+    </linearGradient>
+
+    <radialGradient id="spot-procesotaller" cx="0.42" cy="0.28" r="0.75">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="grain-procesotaller" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.035" numOctaves="4" seed="7" result="t"/>
+      <feColorMatrix in="t" type="saturate" values="0" result="g"/>
+      <feComponentTransfer in="g" result="g2">
+        <feFuncA type="linear" slope="0.16"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="g2" mode="multiply"/>
+    </filter>
+
+    <filter id="soft-procesotaller" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+
+    <filter id="blur-sm-procesotaller" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+
+    <filter id="drop-procesotaller" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A3A28" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg-procesotaller)"/>
+  <rect width="1200" height="1200" fill="url(#spot-procesotaller)"/>
+  <g>
+    <ellipse cx="600" cy="900" rx="400" ry="44" fill="#6B543A" opacity="0.28" filter="url(#blur-sm-procesotaller)"/>
+    <g filter="url(#drop-procesotaller)">
+      <!-- banco de trabajo -->
+      <rect x="180" y="620" width="840" height="46" rx="8" fill="url(#wood-t-procesotaller)"/>
+      <rect x="180" y="620" width="840" height="46" rx="8" fill="url(#wood-t-procesotaller)" filter="url(#grain-procesotaller)"/>
+      <rect x="220" y="666" width="30" height="220" rx="8" fill="url(#wood-procesotaller)"/>
+      <rect x="950" y="666" width="30" height="220" rx="8" fill="url(#wood-procesotaller)"/>
+      <!-- tablones apilados -->
+      <rect x="260" y="560" width="380" height="26" rx="5" fill="url(#wood-procesotaller)"/>
+      <rect x="280" y="534" width="340" height="26" rx="5" fill="#A97B42"/>
+      <rect x="300" y="508" width="300" height="26" rx="5" fill="#C8A165"/>
+      <!-- herramientas -->
+      <rect x="700" y="560" width="120" height="16" rx="8" fill="#5A6273"/>
+      <rect x="836" y="548" width="16" height="44" rx="8" fill="#20242E"/>
+    </g>
+    <!-- sierra circular -->
+    <circle cx="560" cy="380" r="130" fill="none" stroke="#39404F" stroke-width="22"/>
+    <circle cx="560" cy="380" r="60" fill="none" stroke="#20242E" stroke-width="12"/>
+    <path d="M560 250 L560 510 M430 380 L690 380" stroke="#20242E" stroke-width="10" opacity="0.5"/>
+    <rect x="430" y="500" width="260" height="70" rx="10" fill="url(#metal-procesotaller)"/>
+  </g>
+</svg>

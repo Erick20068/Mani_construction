@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  
+  <defs>
+    <linearGradient id="bg-mesacomedornogal" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="60%" stop-color="#F1EBE1"/>
+      <stop offset="100%" stop-color="#E5DDD0"/>
+    </linearGradient>
+
+    <linearGradient id="wood-mesacomedornogal" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="55%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-h-mesacomedornogal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="50%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-t-mesacomedornogal" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="70%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="linen-mesacomedornogal" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#E8E0D2"/>
+      <stop offset="100%" stop-color="#B8AB99"/>
+    </linearGradient>
+
+    <linearGradient id="metal-mesacomedornogal" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5A6273"/>
+      <stop offset="45%" stop-color="#39404F"/>
+      <stop offset="100%" stop-color="#20242E"/>
+    </linearGradient>
+
+    <radialGradient id="spot-mesacomedornogal" cx="0.42" cy="0.28" r="0.75">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="grain-mesacomedornogal" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.035" numOctaves="4" seed="7" result="t"/>
+      <feColorMatrix in="t" type="saturate" values="0" result="g"/>
+      <feComponentTransfer in="g" result="g2">
+        <feFuncA type="linear" slope="0.16"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="g2" mode="multiply"/>
+    </filter>
+
+    <filter id="soft-mesacomedornogal" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+
+    <filter id="blur-sm-mesacomedornogal" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+
+    <filter id="drop-mesacomedornogal" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A3A28" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg-mesacomedornogal)"/>
+  <rect width="1200" height="1200" fill="url(#spot-mesacomedornogal)"/>
+  <g>
+    <ellipse cx="600" cy="900" rx="420" ry="46" fill="#6B543A" opacity="0.3" filter="url(#blur-sm-mesacomedornogal)"/>
+    <g filter="url(#drop-mesacomedornogal)">
+      <!-- tablero -->
+      <path d="M180 520 L1020 520 L940 470 L260 470 Z" fill="url(#wood-t-mesacomedornogal)"/>
+      <path d="M180 520 L1020 520 L940 470 L260 470 Z" fill="url(#wood-t-mesacomedornogal)" filter="url(#grain-mesacomedornogal)"/>
+      <path d="M180 520 L1020 520 L1020 548 L180 548 Z" fill="#4A2F1C"/>
+      <!-- patas -->
+      <rect x="240" y="548" width="34" height="352" rx="8" fill="url(#wood-mesacomedornogal)"/>
+      <rect x="926" y="548" width="34" height="352" rx="8" fill="url(#wood-mesacomedornogal)"/>
+      <rect x="586" y="548" width="30" height="352" rx="8" fill="url(#wood-mesacomedornogal)" opacity="0.9"/>
+      <rect x="240" y="548" width="34" height="352" rx="8" fill="url(#wood-mesacomedornogal)" filter="url(#grain-mesacomedornogal)"/>
+      <rect x="926" y="548" width="34" height="352" rx="8" fill="url(#wood-mesacomedornogal)" filter="url(#grain-mesacomedornogal)"/>
+    </g>
+    <!-- sillas -->
+    
+      <g opacity="0.96">
+        <rect x="254" y="330" width="92" height="150" rx="14" fill="url(#wood-mesacomedornogal)"/>
+        <rect x="254" y="330" width="92" height="150" rx="14" fill="url(#wood-mesacomedornogal)" filter="url(#grain-mesacomedornogal)"/>
+        <rect x="248" y="470" width="104" height="22" rx="9" fill="url(#linen-mesacomedornogal)"/>
+        <rect x="260" y="492" width="12" height="92" rx="5" fill="url(#wood-mesacomedornogal)"/>
+        <rect x="328" y="492" width="12" height="92" rx="5" fill="url(#wood-mesacomedornogal)"/>
+      </g>
+      <g opacity="0.96">
+        <rect x="424" y="330" width="92" height="150" rx="14" fill="url(#wood-mesacomedornogal)"/>
+        <rect x="424" y="330" width="92" height="150" rx="14" fill="url(#wood-mesacomedornogal)" filter="url(#grain-mesacomedornogal)"/>
+        <rect x="418" y="470" width="104" height="22" rx="9" fill="url(#linen-mesacomedornogal)"/>
+        <rect x="430" y="492" width="12" height="92" rx="5" fill="url(#wood-mesacomedornogal)"/>
+        <rect x="498" y="492" width="12" height="92" rx="5" fill="url(#wood-mesacomedornogal)"/>
+      </g>
+      <g opacity="0.96">
+        <rect x="594" y="330" width="92" height="150" rx="14" fill="url(#wood-mesacomedornogal)"/>
+        <rect x="594" y="330" width="92" height="150" rx="14" fill="url(#wood-mesacomedornogal)" filter="url(#grain-mesacomedornogal)"/>
+        <rect x="588" y="470" width="104" height="22" rx="9" fill="url(#linen-mesacomedornogal)"/>
+        <rect x="600" y="492" width="12" height="92" rx="5" fill="url(#wood-mesacomedornogal)"/>
+        <rect x="668" y="492" width="12" height="92" rx="5" fill="url(#wood-mesacomedornogal)"/>
+      </g>
+      <g opacity="0.96">
+        <rect x="764" y="330" width="92" height="150" rx="14" fill="url(#wood-mesacomedornogal)"/>
+        <rect x="764" y="330" width="92" height="150" rx="14" fill="url(#wood-mesacomedornogal)" filter="url(#grain-mesacomedornogal)"/>
+        <rect x="758" y="470" width="104" height="22" rx="9" fill="url(#linen-mesacomedornogal)"/>
+        <rect x="770" y="492" width="12" height="92" rx="5" fill="url(#wood-mesacomedornogal)"/>
+        <rect x="838" y="492" width="12" height="92" rx="5" fill="url(#wood-mesacomedornogal)"/>
+      </g>
+  </g>
+</svg>

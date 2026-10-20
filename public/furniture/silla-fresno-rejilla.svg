@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  
+  <defs>
+    <linearGradient id="bg-sillafresnorejilla" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="60%" stop-color="#F1EBE1"/>
+      <stop offset="100%" stop-color="#E5DDD0"/>
+    </linearGradient>
+
+    <linearGradient id="wood-sillafresnorejilla" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="55%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-h-sillafresnorejilla" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="50%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-t-sillafresnorejilla" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="70%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="linen-sillafresnorejilla" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#E8E0D2"/>
+      <stop offset="100%" stop-color="#B8AB99"/>
+    </linearGradient>
+
+    <linearGradient id="metal-sillafresnorejilla" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5A6273"/>
+      <stop offset="45%" stop-color="#39404F"/>
+      <stop offset="100%" stop-color="#20242E"/>
+    </linearGradient>
+
+    <radialGradient id="spot-sillafresnorejilla" cx="0.42" cy="0.28" r="0.75">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="grain-sillafresnorejilla" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.035" numOctaves="4" seed="7" result="t"/>
+      <feColorMatrix in="t" type="saturate" values="0" result="g"/>
+      <feComponentTransfer in="g" result="g2">
+        <feFuncA type="linear" slope="0.16"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="g2" mode="multiply"/>
+    </filter>
+
+    <filter id="soft-sillafresnorejilla" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+
+    <filter id="blur-sm-sillafresnorejilla" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+
+    <filter id="drop-sillafresnorejilla" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A3A28" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg-sillafresnorejilla)"/>
+  <rect width="1200" height="1200" fill="url(#spot-sillafresnorejilla)"/>
+  <g>
+    <ellipse cx="600" cy="900" rx="240" ry="40" fill="#6B543A" opacity="0.3" filter="url(#blur-sm-sillafresnorejilla)"/>
+    <g filter="url(#drop-sillafresnorejilla)">
+      <!-- respaldo -->
+      <rect x="482" y="250" width="236" height="300" rx="18" fill="url(#wood-sillafresnorejilla)"/>
+      <rect x="482" y="250" width="236" height="300" rx="18" fill="url(#wood-sillafresnorejilla)" filter="url(#grain-sillafresnorejilla)"/>
+      <!-- rejilla de cordón -->
+      <rect x="506" y="300" width="188" height="16" rx="8" fill="#B8AB99" opacity="0.85"/><rect x="506" y="346" width="188" height="16" rx="8" fill="#B8AB99" opacity="0.85"/><rect x="506" y="392" width="188" height="16" rx="8" fill="#B8AB99" opacity="0.85"/><rect x="506" y="438" width="188" height="16" rx="8" fill="#B8AB99" opacity="0.85"/><rect x="506" y="484" width="188" height="16" rx="8" fill="#B8AB99" opacity="0.85"/>
+      <!-- asiento -->
+      <rect x="450" y="556" width="300" height="46" rx="16" fill="url(#wood-t-sillafresnorejilla)"/>
+      <rect x="466" y="602" width="268" height="34" rx="14" fill="url(#linen-sillafresnorejilla)"/>
+      <!-- patas -->
+      <rect x="486" y="636" width="24" height="240" rx="9" fill="url(#wood-sillafresnorejilla)"/>
+      <rect x="690" y="636" width="24" height="240" rx="9" fill="url(#wood-sillafresnorejilla)"/>
+      <rect x="486" y="636" width="24" height="240" rx="9" fill="url(#wood-sillafresnorejilla)" filter="url(#grain-sillafresnorejilla)"/>
+      <rect x="690" y="636" width="24" height="240" rx="9" fill="url(#wood-sillafresnorejilla)" filter="url(#grain-sillafresnorejilla)"/>
+      <!-- travesano -->
+      <rect x="486" y="780" width="228" height="16" rx="8" fill="#9A7E4F"/>
+    </g>
+  </g>
+</svg>

@@ -70,18 +70,11 @@ export default function Galeria3DPage() {
   const fetchVideos = async () => {
     setIsLoading(true)
     try {
-      const { data, error } = await supabase
-        .from("videos_3d")
-        .select(`
-          *,
-          furniture:furniture_items(id, name, slug, images)
-        `)
-        .eq("type", activeType)
-        .eq("is_active", true)
-        .order("display_order", { ascending: true })
-
-      if (error) throw error
-      setVideos(data || [])
+      // Se lee por la API del servidor: la clave de servicio nunca llega al navegador
+      const res = await fetch(`/api/videos?type=${activeType}`)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = await res.json()
+      setVideos(data.videos || [])
     } catch (err) {
       console.error("Error fetching videos:", err)
     } finally {

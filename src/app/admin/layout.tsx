@@ -19,6 +19,7 @@ import {
 import { cn } from "@/lib/utils"
 import { AgentAvatar } from "@/components/agent-avatars"
 import { createServerSupabaseClient } from "@/lib/supabase-server"
+import { signOut } from "@/app/admin/actions"
 
 // El panel admin depende de la sesión (cookies) -> layout bloqueante.
 export const instant = false
@@ -138,9 +139,9 @@ export default async function AdminLayout({
                 <p className="text-xs text-muted-foreground truncate">{profile.email}</p>
               </div>
             </div>
-            <form action="/api/auth/signout" method="POST">
-              <Button 
-                variant="ghost" 
+            <form action={signOut}>
+              <Button
+                variant="ghost"
                 className="w-full justify-start gap-2"
                 type="submit"
               >

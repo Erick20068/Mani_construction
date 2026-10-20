@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  
+  <defs>
+    <linearGradient id="bg-procesoacabado" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="60%" stop-color="#F1EBE1"/>
+      <stop offset="100%" stop-color="#E5DDD0"/>
+    </linearGradient>
+
+    <linearGradient id="wood-procesoacabado" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="55%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-h-procesoacabado" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="50%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-t-procesoacabado" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="70%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="linen-procesoacabado" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#E8E0D2"/>
+      <stop offset="100%" stop-color="#B8AB99"/>
+    </linearGradient>
+
+    <linearGradient id="metal-procesoacabado" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5A6273"/>
+      <stop offset="45%" stop-color="#39404F"/>
+      <stop offset="100%" stop-color="#20242E"/>
+    </linearGradient>
+
+    <radialGradient id="spot-procesoacabado" cx="0.42" cy="0.28" r="0.75">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="grain-procesoacabado" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.035" numOctaves="4" seed="7" result="t"/>
+      <feColorMatrix in="t" type="saturate" values="0" result="g"/>
+      <feComponentTransfer in="g" result="g2">
+        <feFuncA type="linear" slope="0.16"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="g2" mode="multiply"/>
+    </filter>
+
+    <filter id="soft-procesoacabado" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+
+    <filter id="blur-sm-procesoacabado" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+
+    <filter id="drop-procesoacabado" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A3A28" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg-procesoacabado)"/>
+  <rect width="1200" height="1200" fill="url(#spot-procesoacabado)"/>
+  <g>
+    <ellipse cx="600" cy="890" rx="340" ry="40" fill="#6B543A" opacity="0.26" filter="url(#blur-sm-procesoacabado)"/>
+    <g filter="url(#drop-procesoacabado)">
+      <rect x="280" y="580" width="640" height="40" rx="8" fill="url(#wood-t-procesoacabado)"/>
+      <rect x="280" y="580" width="640" height="40" rx="8" fill="url(#wood-t-procesoacabado)" filter="url(#grain-procesoacabado)"/>
+      <rect x="320" y="620" width="26" height="250" rx="8" fill="url(#wood-procesoacabado)"/>
+      <rect x="854" y="620" width="26" height="250" rx="8" fill="url(#wood-procesoacabado)"/>
+    </g>
+    <!-- lijadora -->
+    <rect x="470" y="470" width="240" height="112" rx="18" fill="url(#metal-procesoacabado)"/>
+    <rect x="500" y="440" width="110" height="42" rx="14" fill="#20242E"/>
+    <circle cx="590" cy="596" r="46" fill="#C9B08A"/>
+    <circle cx="590" cy="596" r="20" fill="#39404F"/>
+    <!-- polvo -->
+    <circle cx="420" cy="420" r="6" fill="#C9B08A" opacity="0.4"/><circle cx="448" cy="394" r="9" fill="#C9B08A" opacity="0.4"/><circle cx="476" cy="368" r="12" fill="#C9B08A" opacity="0.4"/><circle cx="504" cy="342" r="6" fill="#C9B08A" opacity="0.4"/><circle cx="532" cy="316" r="9" fill="#C9B08A" opacity="0.4"/><circle cx="560" cy="420" r="12" fill="#C9B08A" opacity="0.4"/><circle cx="588" cy="394" r="6" fill="#C9B08A" opacity="0.4"/><circle cx="616" cy="368" r="9" fill="#C9B08A" opacity="0.4"/><circle cx="644" cy="342" r="12" fill="#C9B08A" opacity="0.4"/><circle cx="672" cy="316" r="6" fill="#C9B08A" opacity="0.4"/><circle cx="700" cy="420" r="9" fill="#C9B08A" opacity="0.4"/><circle cx="728" cy="394" r="12" fill="#C9B08A" opacity="0.4"/><circle cx="756" cy="368" r="6" fill="#C9B08A" opacity="0.4"/><circle cx="784" cy="342" r="9" fill="#C9B08A" opacity="0.4"/>
+  </g>
+</svg>

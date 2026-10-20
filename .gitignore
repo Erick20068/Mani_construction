@@ -39,3 +39,11 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Arte generado: los PNG son rasterizaciones de los SVG (fuente de verdad)
+# Se regeneran con: node scripts/svg-to-png.mjs
+public/furniture/png/
+
+# Capturas de revision de diseño (se regeneran con scripts/screenshot.mjs)
+# public/design-preview/
+

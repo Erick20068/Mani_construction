@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  
+  <defs>
+    <linearGradient id="bg-mesacentrocaoba" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="60%" stop-color="#F1EBE1"/>
+      <stop offset="100%" stop-color="#E5DDD0"/>
+    </linearGradient>
+
+    <linearGradient id="wood-mesacentrocaoba" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="55%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-h-mesacentrocaoba" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="50%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-t-mesacentrocaoba" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="70%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="linen-mesacentrocaoba" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#E8E0D2"/>
+      <stop offset="100%" stop-color="#B8AB99"/>
+    </linearGradient>
+
+    <linearGradient id="metal-mesacentrocaoba" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5A6273"/>
+      <stop offset="45%" stop-color="#39404F"/>
+      <stop offset="100%" stop-color="#20242E"/>
+    </linearGradient>
+
+    <radialGradient id="spot-mesacentrocaoba" cx="0.42" cy="0.28" r="0.75">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="grain-mesacentrocaoba" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.035" numOctaves="4" seed="7" result="t"/>
+      <feColorMatrix in="t" type="saturate" values="0" result="g"/>
+      <feComponentTransfer in="g" result="g2">
+        <feFuncA type="linear" slope="0.16"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="g2" mode="multiply"/>
+    </filter>
+
+    <filter id="soft-mesacentrocaoba" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+
+    <filter id="blur-sm-mesacentrocaoba" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+
+    <filter id="drop-mesacentrocaoba" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A3A28" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg-mesacentrocaoba)"/>
+  <rect width="1200" height="1200" fill="url(#spot-mesacentrocaoba)"/>
+  <g>
+    <ellipse cx="600" cy="880" rx="250" ry="40" fill="#6B543A" opacity="0.3" filter="url(#blur-sm-mesacentrocaoba)"/>
+    <g filter="url(#drop-mesacentrocaoba)">
+      <ellipse cx="600" cy="530" rx="300" ry="105" fill="url(#wood-t-mesacentrocaoba)"/>
+      <ellipse cx="600" cy="530" rx="300" ry="105" fill="url(#wood-t-mesacentrocaoba)" filter="url(#grain-mesacentrocaoba)"/>
+      <ellipse cx="600" cy="548" rx="300" ry="105" fill="#5A2C1B" opacity="0.85"/>
+      <!-- trípode -->
+      <path d="M470 560 L520 560 L600 860 L470 860 Z" fill="url(#wood-mesacentrocaoba)"/>
+      <path d="M680 560 L730 560 L640 860 L520 860 Z" fill="url(#wood-mesacentrocaoba)"/>
+      <rect x="580" y="560" width="40" height="300" rx="10" fill="url(#wood-mesacentrocaoba)"/>
+    </g>
+    <!-- objeto decorativo -->
+    <ellipse cx="600" cy="452" rx="46" ry="16" fill="#5A2C1B" opacity="0.9"/>
+    <rect x="576" y="416" width="48" height="40" rx="8" fill="#6E3B26"/>
+  </g>
+</svg>

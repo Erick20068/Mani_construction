@@ -147,18 +147,11 @@ function ProformasBuilder() {
   const fetchAvailableItems = async () => {
     setIsLoading(true)
     try {
-      const { data, error } = await supabase
-        .from("furniture_items")
-        .select(`
-          *,
-          furniture_categories(name, slug),
-          wood_types(name, color_hex)
-        `)
-        .eq("published", true)
-        .order("created_at", { ascending: false })
-
-      if (error) throw error
-      setAvailableItems(data || [])
+      // Se lee por la API del servidor: la clave de servicio nunca llega al navegador
+      const res = await fetch("/api/catalogo?sort=newest&page=1")
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = await res.json()
+      setAvailableItems(data.items || [])
     } catch (err) {
       console.error("Error fetching items:", err)
       toast.error("Error al cargar el catálogo")

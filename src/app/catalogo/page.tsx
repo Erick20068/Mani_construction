@@ -1,5 +1,6 @@
 import { Metadata } from "next"
 import Link from "next/link"
+import { connection } from "next/server"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -25,7 +26,7 @@ import {
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { formatCurrency } from "@/lib/utils"
-import { createServerSupabaseClient } from "@/lib/supabase-server"
+import { createServerSupabaseAdminClient } from "@/lib/supabase-admin"
 import { CatalogoClient } from "./catalogo-client"
 
 export const metadata: Metadata = {
@@ -74,6 +75,11 @@ export default async function CatalogoPage({
   }>
 }) {
   const params = await searchParams
+
+  // La consulta a Supabase no se puede resolver en tiempo de build:
+  // se espera a la peticion real.
+  await connection()
+
   const category = params.category || "all"
   const wood = params.wood || "all"
   const minPrice = params.minPrice ? Number(params.minPrice) : undefined
@@ -82,7 +88,7 @@ export default async function CatalogoPage({
   const page = params.page ? Number(params.page) : 1
   const pageSize = 12
 
-  const supabase = await createServerSupabaseClient()
+  const supabase = createServerSupabaseAdminClient()
 
   // Build query
   let query = supabase

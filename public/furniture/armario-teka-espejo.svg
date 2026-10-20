@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  
+  <defs>
+    <linearGradient id="bg-armariotekaespejo" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="60%" stop-color="#F1EBE1"/>
+      <stop offset="100%" stop-color="#E5DDD0"/>
+    </linearGradient>
+
+    <linearGradient id="wood-armariotekaespejo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="55%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-h-armariotekaespejo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="50%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-t-armariotekaespejo" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="70%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="linen-armariotekaespejo" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#E8E0D2"/>
+      <stop offset="100%" stop-color="#B8AB99"/>
+    </linearGradient>
+
+    <linearGradient id="metal-armariotekaespejo" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5A6273"/>
+      <stop offset="45%" stop-color="#39404F"/>
+      <stop offset="100%" stop-color="#20242E"/>
+    </linearGradient>
+
+    <radialGradient id="spot-armariotekaespejo" cx="0.42" cy="0.28" r="0.75">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="grain-armariotekaespejo" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.035" numOctaves="4" seed="7" result="t"/>
+      <feColorMatrix in="t" type="saturate" values="0" result="g"/>
+      <feComponentTransfer in="g" result="g2">
+        <feFuncA type="linear" slope="0.16"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="g2" mode="multiply"/>
+    </filter>
+
+    <filter id="soft-armariotekaespejo" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+
+    <filter id="blur-sm-armariotekaespejo" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+
+    <filter id="drop-armariotekaespejo" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A3A28" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg-armariotekaespejo)"/>
+  <rect width="1200" height="1200" fill="url(#spot-armariotekaespejo)"/>
+  <g>
+    <ellipse cx="600" cy="900" rx="380" ry="42" fill="#6B543A" opacity="0.3" filter="url(#blur-sm-armariotekaespejo)"/>
+    <g filter="url(#drop-armariotekaespejo)">
+      <rect x="270" y="250" width="660" height="620" rx="14" fill="url(#wood-armariotekaespejo)"/>
+      <rect x="270" y="250" width="660" height="620" rx="14" fill="url(#wood-armariotekaespejo)" filter="url(#grain-armariotekaespejo)"/>
+      <!-- puertas -->
+      <rect x="296" y="278" width="196" height="564" rx="8" fill="url(#wood-t-armariotekaespejo)"/>
+      <rect x="502" y="278" width="196" height="564" rx="8" fill="#C9D6DE"/>
+      <rect x="502" y="278" width="196" height="564" rx="8" fill="url(#bg-armariotekaespejo)" opacity="0.35"/>
+      <rect x="708" y="278" width="196" height="564" rx="8" fill="url(#wood-t-armariotekaespejo)"/>
+      <!-- tiradores bronce -->
+      <rect x="476" y="540" width="12" height="110" rx="6" fill="#B08A4E"/>
+      <rect x="712" y="540" width="12" height="110" rx="6" fill="#B08A4E"/>
+    </g>
+    <rect x="290" y="870" width="20" height="40" rx="6" fill="#66432A"/>
+    <rect x="890" y="870" width="20" height="40" rx="6" fill="#66432A"/>
+  </g>
+</svg>

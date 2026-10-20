@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1200" width="1200" height="1200">
+  
+  <defs>
+    <linearGradient id="bg-camacabecerocedro" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0%" stop-color="#FAF7F2"/>
+      <stop offset="60%" stop-color="#F1EBE1"/>
+      <stop offset="100%" stop-color="#E5DDD0"/>
+    </linearGradient>
+
+    <linearGradient id="wood-camacabecerocedro" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="55%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-h-camacabecerocedro" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="50%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="wood-t-camacabecerocedro" x1="0" y1="0" x2="1" y2="0.3">
+      <stop offset="0%" stop-color="#C8A165"/>
+      <stop offset="70%" stop-color="#A97B42"/>
+      <stop offset="100%" stop-color="#7C5629"/>
+    </linearGradient>
+
+    <linearGradient id="linen-camacabecerocedro" x1="0" y1="0" x2="0.4" y2="1">
+      <stop offset="0%" stop-color="#E8E0D2"/>
+      <stop offset="100%" stop-color="#B8AB99"/>
+    </linearGradient>
+
+    <linearGradient id="metal-camacabecerocedro" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#5A6273"/>
+      <stop offset="45%" stop-color="#39404F"/>
+      <stop offset="100%" stop-color="#20242E"/>
+    </linearGradient>
+
+    <radialGradient id="spot-camacabecerocedro" cx="0.42" cy="0.28" r="0.75">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+
+    <filter id="grain-camacabecerocedro" x="-5%" y="-5%" width="110%" height="110%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.035" numOctaves="4" seed="7" result="t"/>
+      <feColorMatrix in="t" type="saturate" values="0" result="g"/>
+      <feComponentTransfer in="g" result="g2">
+        <feFuncA type="linear" slope="0.16"/>
+      </feComponentTransfer>
+      <feBlend in="SourceGraphic" in2="g2" mode="multiply"/>
+    </filter>
+
+    <filter id="soft-camacabecerocedro" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="18"/>
+    </filter>
+
+    <filter id="blur-sm-camacabecerocedro" x="-40%" y="-40%" width="180%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+
+    <filter id="drop-camacabecerocedro" x="-30%" y="-30%" width="160%" height="170%">
+      <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#4A3A28" flood-opacity="0.24"/>
+    </filter>
+  </defs>
+  <rect width="1200" height="1200" fill="url(#bg-camacabecerocedro)"/>
+  <rect width="1200" height="1200" fill="url(#spot-camacabecerocedro)"/>
+  <g>
+    <ellipse cx="600" cy="900" rx="430" ry="44" fill="#6B543A" opacity="0.28" filter="url(#blur-sm-camacabecerocedro)"/>
+    <g filter="url(#drop-camacabecerocedro)">
+      <!-- cabecero listones -->
+      <rect x="248" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/><rect x="312" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/><rect x="376" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/><rect x="440" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/><rect x="504" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/><rect x="568" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/><rect x="632" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/><rect x="696" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/><rect x="760" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/><rect x="824" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/><rect x="888" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)"/>
+      <rect x="248" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/><rect x="312" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/><rect x="376" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/><rect x="440" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/><rect x="504" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/><rect x="568" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/><rect x="632" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/><rect x="696" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/><rect x="760" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/><rect x="824" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/><rect x="888" y="300" width="40" height="300" rx="12" fill="url(#wood-camacabecerocedro)" filter="url(#grain-camacabecerocedro)"/>
+      <!-- base -->
+      <rect x="230" y="640" width="740" height="180" rx="18" fill="url(#wood-camacabecerocedro)"/>
+      <!-- colchon -->
+      <rect x="252" y="596" width="696" height="70" rx="20" fill="url(#linen-camacabecerocedro)"/>
+      <!-- mantel -->
+      <path d="M252 640 L948 640 L948 800 Q600 836 252 800 Z" fill="url(#linen-camacabecerocedro)"/>
+      <path d="M252 640 L948 640 L948 800 Q600 836 252 800 Z" fill="#8A6132" opacity="0.16"/>
+      <!-- almohadas -->
+      <rect x="300" y="516" width="170" height="90" rx="22" fill="#F3EDE3"/>
+      <rect x="492" y="516" width="170" height="90" rx="22" fill="#F3EDE3"/>
+      <rect x="684" y="516" width="170" height="90" rx="22" fill="#F3EDE3"/>
+    </g>
+    <rect x="250" y="820" width="22" height="66" rx="7" fill="url(#wood-camacabecerocedro)"/>
+    <rect x="928" y="820" width="22" height="66" rx="7" fill="url(#wood-camacabecerocedro)"/>
+  </g>
+</svg>
