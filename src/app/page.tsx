@@ -12,7 +12,11 @@ import {
   CheckCircle,
   Shield,
   Truck,
-  Users
+  Users,
+  LogIn,
+  UserPlus,
+  Monitor,
+  Download
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -111,6 +115,25 @@ export default function HomePage() {
                 <Link href="/galeria-3d">
                   <Video className="h-5 w-5" />
                   Ver Galería 3D
+                </Link>
+              </Button>
+            </div>
+
+            {/* Auth quick access */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6 animate-in stagger-5">
+              <Button variant="outline" size="sm" asChild className="gap-2">
+                <Link href="/login">
+                  <LogIn className="h-4 w-4" /> Iniciar Sesión
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild className="gap-2">
+                <Link href="/register">
+                  <UserPlus className="h-4 w-4" /> Registrarse
+                </Link>
+              </Button>
+              <Button variant="outline" size="sm" asChild className="gap-2">
+                <Link href="/client">
+                  <Monitor className="h-4 w-4" /> Panel Cliente
                 </Link>
               </Button>
             </div>
@@ -246,7 +269,7 @@ export default function HomePage() {
                 <li><Link href="/galeria-3d" className="hover:text-primary transition-colors">Galería 3D</Link></li>
                 <li><Link href="/proformas" className="hover:text-primary transition-colors">Proformas</Link></li>
                 <li><Link href="/materiales" className="hover:text-primary transition-colors">Materiales</Link></li>
-                <li><Link href="/taller" className="hover:text-primary transition-colors">El Taller (agentes)</Link></li>
+                <li><Link href="/configurador" className="hover:text-primary transition-colors">Configurador</Link></li>
               </ul>
             </nav>
             <nav>
